@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Skills | Smart Career Analytics</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+
+        .skills-page-grid {
+            display: grid;
+            grid-template-columns: 0.85fr 1.15fr;
+            gap: 22px;
+            align-items: start;
+        }
+
+        .skills-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .skills-card-header {
+            margin-bottom: 22px;
+        }
+
+        .skills-card-header h2 {
+            color: #111827;
+            font-size: 19px;
+            margin-bottom: 5px;
+        }
+
+        .skills-card-header p {
+            color: #6b7280;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .skill-input-group {
+            margin-bottom: 20px;
+        }
+
+        .skill-input-group label {
+            display: block;
+            color: #374151;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .skill-input-group input,
+        .skill-input-group select {
+            width: 100%;
+            padding: 12px 13px;
+            border: 1px solid #d1d5db;
+            border-radius: 9px;
+            background: white;
+            color: #111827;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .skill-input-group input:focus,
+        .skill-input-group select:focus {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79,70,229,0.1);
+        }
+
+        .skill-level-preview {
+            margin-top: 22px;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 17px;
+        }
+
+        .skill-level-preview h4 {
+            color: #374151;
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .level-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eeeeee;
+        }
+
+        .level-item:last-child {
+            border-bottom: none;
+        }
+
+        .level-item span {
+            color: #6b7280;
+            font-size: 12px;
+        }
+
+        .level-percent {
+            font-weight: 700;
+            color: #4f46e5 !important;
+        }
+
+        .skills-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .skill-item {
+            border: 1px solid #e5e7eb;
+            border-radius: 13px;
+            padding: 17px;
+            background: #ffffff;
+            transition: 0.2s ease;
+        }
+
+        .skill-item:hover {
+            border-color: #c7d2fe;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.04);
+        }
+
+        .skill-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .skill-name-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .skill-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 9px;
+            background: #eef2ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+        }
+
+        .skill-name {
+            color: #111827;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .skill-level {
+            color: #4f46e5;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .skill-progress {
+            height: 8px;
+            background: #eef2f7;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .skill-progress-fill {
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                #4f46e5,
+                #6366f1
+            );
+            border-radius: 20px;
+        }
+
+        .skills-empty {
+            text-align: center;
+            padding: 45px 20px;
+            color: #6b7280;
+        }
+
+        .skills-empty-icon {
+            font-size: 40px;
+            margin-bottom: 12px;
+        }
+
+        .skills-empty h3 {
+            color: #374151;
+            font-size: 16px;
+            margin-bottom: 6px;
+        }
+
+        .skills-empty p {
+            font-size: 13px;
+        }
+
+        .skills-info {
+            margin-top: 20px;
+            padding: 15px;
+            background: #eef2ff;
+            border: 1px solid #c7d2fe;
+            border-radius: 11px;
+        }
+
+        .skills-info strong {
+            display: block;
+            color: #3730a3;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        .skills-info p {
+            color: #4338ca;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 950px) {
+
+            .skills-page-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .skills-card {
+                padding: 19px;
+            }
+
+            .skill-item-header {
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="dashboard-container">
+
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-logo">
+
+            <h2>🎓 Smart Career</h2>
+
+            <p>
+                Student Analytics Platform
+            </p>
+
+        </div>
+
+
+        <nav>
+
+            <a href="{{ url_for('dashboard') }}">
+                📊
+                <span>Dashboard</span>
+            </a>
+
+            <a href="{{ url_for('profile') }}">
+                👤
+                <span>My Profile</span>
+            </a>
+
+            <a href="{{ url_for('progress') }}">
+                📈
+                <span>Progress</span>
+            </a>
+
+            <a href="{{ url_for('analytics') }}">
+                📊
+                <span>Analytics</span>
+            </a>
+
+            <a href="{{ url_for('skills') }}" class="active">
+                💡
+                <span>My Skills</span>
+            </a>
+
+            <a href="{{ url_for('skill_gap') }}">
+                🎯
+                <span>Skill Gap</span>
+            </a>
+
+            <a href="{{ url_for('report') }}">
+                📄
+                <span>Career Report</span>
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <a href="{{ url_for('logout') }}">
+                🚪
+                <span>Logout</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <main class="main-content">
+
+
+        <!-- HEADER -->
+
+        <div class="top-header">
+
+            <div>
+
+                <h1>
+                    My Skills
+                </h1>
+
+                <p>
+                    Manage your technical skills and track your proficiency.
+                </p>
+
+            </div>
+
+
+            <div class="welcome-user">
+
+                <div class="user-avatar">
+
+                    {{ session.get('name', 'S')[0]|upper }}
+
+                </div>
+
+                <div>
+
+                    <strong style="color:#111827;">
+                        {{ session.get('name', 'Student') }}
+                    </strong>
+
+                    <div style="font-size:12px;color:#6b7280;">
+                        Student
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= SKILLS GRID ================= -->
+
+        <div class="skills-page-grid">
+
+
+            <!-- ================= ADD SKILL ================= -->
+
+            <section class="skills-card">
+
+                <div class="skills-card-header">
+
+                    <h2>
+                        Add a New Skill
+                    </h2>
+
+                    <p>
+                        Add a skill and select your current proficiency level.
+                    </p>
+
+                </div>
+
+
+                <form method="POST">
+
+
+                    <div class="skill-input-group">
+
+                        <label for="skill_name">
+                            Skill Name
+                        </label>
+
+                        <input
+                            type="text"
+                            id="skill_name"
+                            name="skill_name"
+                            placeholder="e.g. Python"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="skill-input-group">
+
+                        <label for="skill_level">
+                            Skill Level
+                        </label>
+
+                        <select
+                            id="skill_level"
+                            name="skill_level"
+                            required
+                        >
+
+                            <option value="25">
+                                Beginner
+                            </option>
+
+                            <option value="50">
+                                Basic
+                            </option>
+
+                            <option value="75">
+                                Intermediate
+                            </option>
+
+                            <option value="100">
+                                Advanced
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                        style="width:100%;">
+
+                        + Add Skill
+
+                    </button>
+
+                </form>
+
+
+                <div class="skill-level-preview">
+
+                    <h4>
+                        Proficiency Scale
+                    </h4>
+
+
+                    <div class="level-item">
+
+                        <span>
+                            Beginner
+                        </span>
+
+                        <span class="level-percent">
+                            25%
+                        </span>
+
+                    </div>
+
+
+                    <div class="level-item">
+
+                        <span>
+                            Basic
+                        </span>
+
+                        <span class="level-percent">
+                            50%
+                        </span>
+
+                    </div>
+
+
+                    <div class="level-item">
+
+                        <span>
+                            Intermediate
+                        </span>
+
+                        <span class="level-percent">
+                            75%
+                        </span>
+
+                    </div>
+
+
+                    <div class="level-item">
+
+                        <span>
+                            Advanced
+                        </span>
+
+                        <span class="level-percent">
+                            100%
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="skills-info">
+
+                    <strong>
+                        💡 Tip
+                    </strong>
+
+                    <p>
+                        Add skills honestly. Your skill levels are used
+                        by the Skill Gap Analysis to identify areas
+                        where you need more practice.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= EXISTING SKILLS ================= -->
+
+            <section class="skills-card">
+
+                <div class="skills-card-header">
+
+                    <h2>
+                        Your Technical Skills
+                    </h2>
+
+                    <p>
+                        Track your current proficiency across your skills.
+                    </p>
+
+                </div>
+
+
+                {% if skills %}
+
+                <div class="skills-list">
+
+
+                    {% for skill in skills %}
+
+                    <div class="skill-item">
+
+
+                        <div class="skill-item-header">
+
+                            <div class="skill-name-area">
+
+                                <div class="skill-icon">
+                                    💻
+                                </div>
+
+                                <div class="skill-name">
+                                    {{ skill.skill_name }}
+                                </div>
+
+                            </div>
+
+
+                            <div class="skill-level">
+
+                                {% if skill.skill_level >= 100 %}
+                                    Advanced
+                                {% elif skill.skill_level >= 75 %}
+                                    Intermediate
+                                {% elif skill.skill_level >= 50 %}
+                                    Basic
+                                {% else %}
+                                    Beginner
+                                {% endif %}
+
+                                · {{ skill.skill_level }}%
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="skill-progress">
+
+                            <div
+                                class="skill-progress-fill"
+                                style="width: {{ skill.skill_level }}%;">
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                    {% endfor %}
+
+
+                </div>
+
+                {% else %}
+
+                <div class="skills-empty">
+
+                    <div class="skills-empty-icon">
+                        💡
+                    </div>
+
+                    <h3>
+                        No skills added yet
+                    </h3>
+
+                    <p>
+                        Add your first technical skill using
+                        the form on the left.
+                    </p>
+
+                </div>
+
+                {% endif %}
+
+
+            </section>
+
+        </div>
+
+
+        <!-- ================= FOOTER ================= -->
+
+        <div class="footer">
+
+            Smart Student Career & Placement Analytics
+
+        </div>
+
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

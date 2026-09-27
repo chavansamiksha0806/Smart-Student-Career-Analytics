@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Career Report | Smart Career Analytics</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+
+        .report-page-header {
+            margin-bottom: 24px;
+        }
+
+        .report-page-header h1 {
+            color: #111827;
+            font-size: 26px;
+            margin-bottom: 6px;
+        }
+
+        .report-page-header p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .report-container {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 22px;
+            align-items: start;
+        }
+
+        .report-main-card,
+        .report-side-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .report-main-card {
+            padding: 30px;
+        }
+
+        .report-side-card {
+            padding: 22px;
+            margin-bottom: 18px;
+        }
+
+        /* REPORT HEADER */
+
+        .report-cover {
+            text-align: center;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 25px;
+        }
+
+        .report-logo {
+            width: 58px;
+            height: 58px;
+            margin: 0 auto 13px;
+            border-radius: 15px;
+            background: #eef2ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+        }
+
+        .report-cover h2 {
+            color: #111827;
+            font-size: 23px;
+            margin-bottom: 6px;
+        }
+
+        .report-cover p {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .student-name {
+            color: #4f46e5 !important;
+            font-weight: 700;
+            margin-top: 10px;
+        }
+
+        /* SCORE */
+
+        .score-section {
+            display: grid;
+            grid-template-columns: 180px 1fr;
+            gap: 28px;
+            align-items: center;
+            padding: 20px 0 28px;
+        }
+
+        .score-circle {
+            width: 155px;
+            height: 155px;
+            border-radius: 50%;
+            background:
+                conic-gradient(
+                    #4f46e5 {{ placement_score }}%,
+                    #e5e7eb {{ placement_score }}%
+                );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: auto;
+        }
+
+        .score-circle-inner {
+            width: 119px;
+            height: 119px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .score-number {
+            color: #111827;
+            font-size: 32px;
+            font-weight: 800;
+        }
+
+        .score-out-of {
+            color: #9ca3af;
+            font-size: 11px;
+        }
+
+        .score-details h3 {
+            color: #111827;
+            font-size: 19px;
+            margin-bottom: 7px;
+        }
+
+        .score-details p {
+            color: #6b7280;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .status-badge {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 7px 12px;
+            border-radius: 20px;
+            background: #eef2ff;
+            color: #4338ca;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        /* SECTIONS */
+
+        .report-section {
+            margin-top: 25px;
+        }
+
+        .report-section-title {
+            color: #111827;
+            font-size: 17px;
+            font-weight: 700;
+            padding-bottom: 11px;
+            border-bottom: 1px solid #e5e7eb;
+            margin-bottom: 16px;
+        }
+
+        .report-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .report-item {
+            padding: 14px;
+            background: #f9fafb;
+            border: 1px solid #eeeeee;
+            border-radius: 10px;
+        }
+
+        .report-item-label {
+            color: #9ca3af;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+
+        .report-item-value {
+            color: #374151;
+            font-size: 13px;
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        /* SKILLS */
+
+        .skill-report-item {
+            margin-bottom: 14px;
+        }
+
+        .skill-report-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+
+        .skill-report-header span:first-child {
+            color: #374151;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .skill-report-header span:last-child {
+            color: #4f46e5;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .skill-report-bar {
+            height: 7px;
+            background: #eef2f7;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .skill-report-fill {
+            height: 100%;
+            background: #4f46e5;
+            border-radius: 20px;
+        }
+
+        /* SIDE */
+
+        .report-side-card h3 {
+            color: #111827;
+            font-size: 16px;
+            margin-bottom: 6px;
+        }
+
+        .report-side-card > p {
+            color: #6b7280;
+            font-size: 11px;
+            line-height: 1.6;
+            margin-bottom: 18px;
+        }
+
+        .report-stat {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .report-stat:last-child {
+            border-bottom: none;
+        }
+
+        .report-stat span {
+            color: #6b7280;
+            font-size: 12px;
+        }
+
+        .report-stat strong {
+            color: #111827;
+            font-size: 13px;
+        }
+
+        .download-btn-large {
+            display: block;
+            width: 100%;
+            text-align: center;
+            padding: 13px 16px;
+            border-radius: 9px;
+            background: #4f46e5;
+            color: white;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+            transition: 0.2s ease;
+        }
+
+        .download-btn-large:hover {
+            background: #4338ca;
+            transform: translateY(-1px);
+        }
+
+        .report-note {
+            background: #eef2ff;
+            border: 1px solid #c7d2fe;
+            border-radius: 11px;
+            padding: 14px;
+            margin-top: 17px;
+        }
+
+        .report-note strong {
+            display: block;
+            color: #3730a3;
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        .report-note p {
+            color: #4338ca;
+            font-size: 10px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 950px) {
+
+            .report-container {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 650px) {
+
+            .score-section {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .report-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .report-main-card {
+                padding: 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="dashboard-container">
+
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-logo">
+
+            <h2>🎓 Smart Career</h2>
+
+            <p>
+                Student Analytics Platform
+            </p>
+
+        </div>
+
+
+        <nav>
+
+            <a href="{{ url_for('dashboard') }}">
+                📊
+                <span>Dashboard</span>
+            </a>
+
+            <a href="{{ url_for('profile') }}">
+                👤
+                <span>My Profile</span>
+            </a>
+
+            <a href="{{ url_for('progress') }}">
+                📈
+                <span>Progress</span>
+            </a>
+
+            <a href="{{ url_for('analytics') }}">
+                📊
+                <span>Analytics</span>
+            </a>
+
+            <a href="{{ url_for('skills') }}">
+                💡
+                <span>My Skills</span>
+            </a>
+
+            <a href="{{ url_for('skill_gap') }}">
+                🎯
+                <span>Skill Gap</span>
+            </a>
+
+            <a href="{{ url_for('report') }}" class="active">
+                📄
+                <span>Career Report</span>
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <a href="{{ url_for('logout') }}">
+                🚪
+                <span>Logout</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="main-content">
+
+
+        <!-- HEADER -->
+
+        <div class="top-header">
+
+            <div>
+
+                <h1>
+                    Career Report
+                </h1>
+
+                <p>
+                    A consolidated view of your academic and career preparation.
+                </p>
+
+            </div>
+
+
+            <div class="welcome-user">
+
+                <div class="user-avatar">
+
+                    {{ session.get('name', 'S')[0]|upper }}
+
+                </div>
+
+                <div>
+
+                    <strong style="color:#111827;">
+                        {{ session.get('name', 'Student') }}
+                    </strong>
+
+                    <div style="font-size:12px;color:#6b7280;">
+                        Student
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= REPORT ================= -->
+
+        <div class="report-container">
+
+
+            <!-- MAIN REPORT -->
+
+            <section class="report-main-card">
+
+
+                <!-- COVER -->
+
+                <div class="report-cover">
+
+                    <div class="report-logo">
+                        🎓
+                    </div>
+
+                    <h2>
+                        Student Career Report
+                    </h2>
+
+                    <p>
+                        Smart Student Career & Placement Analytics
+                    </p>
+
+                    <p class="student-name">
+                        {{ session.get('name', 'Student') }}
+                    </p>
+
+                </div>
+
+
+                <!-- SCORE -->
+
+                <div class="score-section">
+
+
+                    <div class="score-circle">
+
+                        <div class="score-circle-inner">
+
+                            <div class="score-number">
+                                {{ placement_score }}
+                            </div>
+
+                            <div class="score-out-of">
+                                OUT OF 100
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="score-details">
+
+                        <h3>
+                            Preparation Score
+                        </h3>
+
+                        <p>
+                            Your current preparation score is based on
+                            academic performance, technical skills,
+                            projects, certifications, internship experience,
+                            coding practice and interview preparation.
+                        </p>
+
+                        <span class="status-badge">
+                            {{ readiness_level }}
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- ACADEMIC -->
+
+                <div class="report-section">
+
+                    <div class="report-section-title">
+                        Academic Profile
+                    </div>
+
+
+                    <div class="report-grid">
+
+
+                        <div class="report-item">
+
+                            <div class="report-item-label">
+                                College
+                            </div>
+
+                            <div class="report-item-value">
+                                {{ profile.college or "Not provided" }}
+                            </div>
+
+                        </div>
+
+
+                        <div class="report-item">
+
+                            <div class="report-item-label">
+                                Course
+                            </div>
+
+                            <div class="report-item-value">
+                                {{ profile.course or "Not provided" }}
+                            </div>
+
+                        </div>
+
+
+                        <div class="report-item">
+
+                            <div class="report-item-label">
+                                Academic Year
+                            </div>
+
+                            <div class="report-item-value">
+                                {{ profile.year or "Not provided" }}
+                            </div>
+
+                        </div>
+
+
+                        <div class="report-item">
+
+                            <div class="report-item-label">
+                                CGPA
+                            </div>
+
+                            <div class="report-item-value">
+                                {{ profile.cgpa or "Not provided" }}
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+                <!-- CAREER PROFILE -->
+
+                <div class="report-section">
+
+                    <div class="report-section-title">
+                        Career Profile
+                    </div>
+
+
+                    <div class="report-grid">
+
+
+                        <div class="report-item">
+
+                            <div class="report-item-label">
+                                Certifications
+                            </div>
+
+                            <div class="report-item-value">
+                                {{ profile.certifications or "None added" }}
+                            </div>
+
+                        </div>
+
+
+                        <div class="report-item">
+
+                            <div class="report-item-label">
+                                Internship
+                            </div>
+
+                            <div class="report-item-value">
+                                {{ profile.internship or "Not provided" }}
+                            </div>
+
+                        </div>
+
+
+                        <div class="report-item">
+
+                            <div class="report-item-label">
+                                Projects
+                            </div>
+
+                            <div class="report-item-value">
+                                {{ profile.projects or "None added" }}
+                            </div>
+
+                        </div>
+
+
+                        <div class="report-item">
+
+                            <div class="report-item-label">
+                                Profile Completion
+                            </div>
+
+                            <div class="report-item-value">
+                                {{ profile_completion }}%
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+                <!-- SKILLS -->
+
+                <div class="report-section">
+
+                    <div class="report-section-title">
+                        Technical Skills
+                    </div>
+
+
+                    {% if skills %}
+
+                        {% for skill in skills %}
+
+                        <div class="skill-report-item">
+
+                            <div class="skill-report-header">
+
+                                <span>
+                                    {{ skill.skill_name }}
+                                </span>
+
+                                <span>
+                                    {{ skill.skill_level }}%
+                                </span>
+
+                            </div>
+
+
+                            <div class="skill-report-bar">
+
+                                <div
+                                    class="skill-report-fill"
+                                    style="width: {{ skill.skill_level }}%;">
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <p style="color:#6b7280;font-size:12px;">
+                            No technical skills added yet.
+                        </p>
+
+                    {% endif %}
+
+                </div>
+
+
+                <!-- PROGRESS -->
+
+                <div class="report-section">
+
+                    <div class="report-section-title">
+                        Preparation Progress
+                    </div>
+
+
+                    <div class="report-grid">
+
+
+                        <div class="report-item">
+
+                            <div class="report-item-label">
+                                Coding Problems
+                            </div>
+
+                            <div class="report-item-value">
+                                {{ progress.coding_problems }}
+                            </div>
+
+                        </div>
+
+
+                        <div class="report-item">
+
+                            <div class="report-item-label">
+                                SQL Problems
+                            </div>
+
+                            <div class="report-item-value">
+                                {{ progress.sql_problems }}
+                            </div>
+
+                        </div>
+
+
+                        <div class="report-item">
+
+                            <div class="report-item-label">
+                                Aptitude Score
+                            </div>
+
+                            <div class="report-item-value">
+                                {{ aptitude_score }}%
+                            </div>
+
+                        </div>
+
+
+                        <div class="report-item">
+
+                            <div class="report-item-label">
+                                Communication
+                            </div>
+
+                            <div class="report-item-value">
+                                {{ communication_score }}%
+                            </div>
+
+                        </div>
+
+
+                        <div class="report-item">
+
+                            <div class="report-item-label">
+                                Mock Interviews
+                            </div>
+
+                            <div class="report-item-value">
+                                {{ progress.mock_interviews }}
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+
+            </section>
+
+
+            <!-- ================= SIDE PANEL ================= -->
+
+            <aside>
+
+
+                <div class="report-side-card">
+
+                    <h3>
+                        Download Report
+                    </h3>
+
+                    <p>
+                        Generate a PDF version of your current
+                        career preparation report.
+                    </p>
+
+
+                    <a
+                        href="{{ url_for('download_report') }}"
+                        class="download-btn-large">
+
+                        ⬇ Download PDF Report
+
+                    </a>
+
+
+                    <div class="report-note">
+
+                        <strong>
+                            📌 Report Note
+                        </strong>
+
+                        <p>
+                            The preparation score is a custom project
+                            metric used for tracking progress. It does
+                            not represent actual placement probability.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="report-side-card">
+
+                    <h3>
+                        Report Overview
+                    </h3>
+
+                    <p>
+                        Information currently included in your report.
+                    </p>
+
+
+                    <div class="report-stat">
+
+                        <span>
+                            Academic Profile
+                        </span>
+
+                        <strong>
+                            ✓
+                        </strong>
+
+                    </div>
+
+
+                    <div class="report-stat">
+
+                        <span>
+                            Technical Skills
+                        </span>
+
+                        <strong>
+                            {{ skills|length }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="report-stat">
+
+                        <span>
+                            Projects
+                        </span>
+
+                        <strong>
+                            {% if profile.projects %}
+                                Added
+                            {% else %}
+                                Missing
+                            {% endif %}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="report-stat">
+
+                        <span>
+                            Certifications
+                        </span>
+
+                        <strong>
+                            {% if profile.certifications %}
+                                Added
+                            {% else %}
+                                Missing
+                            {% endif %}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="report-stat">
+
+                        <span>
+                            Internship
+                        </span>
+
+                        <strong>
+                            {{ profile.internship or "No" }}
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="report-side-card">
+
+                    <h3>
+                        Next Step
+                    </h3>
+
+                    <p>
+                        Review your skill gaps and continue improving
+                        the areas that need practice.
+                    </p>
+
+
+                    <a
+                        href="{{ url_for('skill_gap') }}"
+                        class="btn btn-primary"
+                        style="width:100%;text-align:center;">
+
+                        View Skill Gaps →
+
+                    </a>
+
+                </div>
+
+
+            </aside>
+
+
+        </div>
+
+
+        <!-- FOOTER -->
+
+        <div class="footer">
+
+            Smart Student Career & Placement Analytics
+
+        </div>
+
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Progress | Smart Career Analytics</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+
+        .progress-layout {
+            display: grid;
+            grid-template-columns: 1.4fr 0.6fr;
+            gap: 22px;
+        }
+
+        .progress-form-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 15px;
+            padding: 28px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .page-section-header {
+            padding-bottom: 20px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .page-section-header h2 {
+            color: #111827;
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .page-section-header p {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .progress-form-section {
+            margin-bottom: 28px;
+        }
+
+        .progress-section-title {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            color: #111827;
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .progress-form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .progress-field {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 17px;
+        }
+
+        .progress-field label {
+            display: block;
+            color: #374151;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .progress-field input {
+            width: 100%;
+            padding: 11px 13px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            outline: none;
+            background: white;
+        }
+
+        .progress-field input:focus {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79,70,229,0.1);
+        }
+
+        .field-description {
+            color: #9ca3af;
+            font-size: 11px;
+            margin-top: 6px;
+        }
+
+        .save-progress {
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        /* RIGHT SUMMARY */
+
+        .progress-summary {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .summary-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 15px;
+            padding: 23px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .summary-card h3 {
+            color: #111827;
+            font-size: 17px;
+            margin-bottom: 5px;
+        }
+
+        .summary-card > p {
+            color: #6b7280;
+            font-size: 12px;
+            margin-bottom: 18px;
+        }
+
+        .summary-score {
+            text-align: center;
+            padding: 8px 0 15px;
+        }
+
+        .summary-score-number {
+            font-size: 38px;
+            font-weight: 800;
+            color: #4f46e5;
+        }
+
+        .summary-score-label {
+            color: #6b7280;
+            font-size: 12px;
+        }
+
+        .mini-metric {
+            margin-bottom: 16px;
+        }
+
+        .mini-metric:last-child {
+            margin-bottom: 0;
+        }
+
+        .mini-metric-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+
+        .mini-metric-header strong {
+            color: #374151;
+            font-size: 13px;
+        }
+
+        .mini-metric-header span {
+            color: #6b7280;
+            font-size: 12px;
+        }
+
+        .tip-box {
+            background: #eef2ff;
+            border: 1px solid #c7d2fe;
+            border-radius: 12px;
+            padding: 17px;
+        }
+
+        .tip-box strong {
+            display: block;
+            color: #3730a3;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        .tip-box p {
+            color: #4338ca;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 900px) {
+
+            .progress-layout {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .progress-form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .progress-form-card {
+                padding: 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="dashboard-container">
+
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-logo">
+
+            <h2>🎓 Smart Career</h2>
+
+            <p>
+                Student Analytics Platform
+            </p>
+
+        </div>
+
+
+        <nav>
+
+            <a href="{{ url_for('dashboard') }}">
+                📊
+                <span>Dashboard</span>
+            </a>
+
+            <a href="{{ url_for('profile') }}">
+                👤
+                <span>My Profile</span>
+            </a>
+
+            <a href="{{ url_for('progress') }}" class="active">
+                📈
+                <span>Progress</span>
+            </a>
+
+            <a href="{{ url_for('analytics') }}">
+                📊
+                <span>Analytics</span>
+            </a>
+
+            <a href="{{ url_for('skills') }}">
+                💡
+                <span>My Skills</span>
+            </a>
+
+            <a href="{{ url_for('skill_gap') }}">
+                🎯
+                <span>Skill Gap</span>
+            </a>
+
+            <a href="{{ url_for('report') }}">
+                📄
+                <span>Career Report</span>
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <a href="{{ url_for('logout') }}">
+                🚪
+                <span>Logout</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="main-content">
+
+
+        <!-- HEADER -->
+
+        <div class="top-header">
+
+            <div>
+
+                <h1>
+                    Preparation Progress
+                </h1>
+
+                <p>
+                    Record your learning and interview preparation progress.
+                </p>
+
+            </div>
+
+
+            <div class="welcome-user">
+
+                <div class="user-avatar">
+
+                    {{ session.get('name', 'S')[0]|upper }}
+
+                </div>
+
+                <div>
+
+                    <strong style="color:#111827;">
+                        {{ session.get('name', 'Student') }}
+                    </strong>
+
+                    <div style="font-size:12px;color:#6b7280;">
+                        Student
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= CONTENT ================= -->
+
+        <div class="progress-layout">
+
+
+            <!-- ================= FORM ================= -->
+
+            <section class="progress-form-card">
+
+                <div class="page-section-header">
+
+                    <h2>
+                        Update Your Progress
+                    </h2>
+
+                    <p>
+                        Enter your latest preparation numbers.
+                    </p>
+
+                </div>
+
+
+                <form method="POST">
+
+
+                    <!-- CODING -->
+
+                    <div class="progress-form-section">
+
+                        <div class="progress-section-title">
+                            💻
+                            Coding Practice
+                        </div>
+
+
+                        <div class="progress-form-row">
+
+                            <div class="progress-field">
+
+                                <label for="coding_problems">
+                                    Coding Problems Solved
+                                </label>
+
+                                <input
+                                    type="number"
+                                    id="coding_problems"
+                                    name="coding_problems"
+                                    min="0"
+                                    value="{{ progress.coding_problems if progress else 0 }}"
+                                    required
+                                >
+
+                                <div class="field-description">
+                                    Include LeetCode, HackerRank, GFG, etc.
+                                </div>
+
+                            </div>
+
+
+                            <div class="progress-field">
+
+                                <label for="sql_problems">
+                                    SQL Problems Solved
+                                </label>
+
+                                <input
+                                    type="number"
+                                    id="sql_problems"
+                                    name="sql_problems"
+                                    min="0"
+                                    value="{{ progress.sql_problems if progress else 0 }}"
+                                    required
+                                >
+
+                                <div class="field-description">
+                                    Include SQL practice questions.
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- APTITUDE + COMMUNICATION -->
+
+                    <div class="progress-form-section">
+
+                        <div class="progress-section-title">
+                            🧠
+                            Assessment Skills
+                        </div>
+
+
+                        <div class="progress-form-row">
+
+                            <div class="progress-field">
+
+                                <label for="aptitude_score">
+                                    Aptitude Score
+                                </label>
+
+                                <input
+                                    type="number"
+                                    id="aptitude_score"
+                                    name="aptitude_score"
+                                    min="0"
+                                    max="100"
+                                    step="0.1"
+                                    value="{{ progress.aptitude_score if progress else 0 }}"
+                                    required
+                                >
+
+                                <div class="field-description">
+                                    Enter your average score from 0–100.
+                                </div>
+
+                            </div>
+
+
+                            <div class="progress-field">
+
+                                <label for="communication_score">
+                                    Communication Score
+                                </label>
+
+                                <input
+                                    type="number"
+                                    id="communication_score"
+                                    name="communication_score"
+                                    min="0"
+                                    max="100"
+                                    step="0.1"
+                                    value="{{ progress.communication_score if progress else 0 }}"
+                                    required
+                                >
+
+                                <div class="field-description">
+                                    Self-assessed or practice score from 0–100.
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- MOCK INTERVIEW -->
+
+                    <div class="progress-form-section">
+
+                        <div class="progress-section-title">
+                            🎤
+                            Interview Preparation
+                        </div>
+
+
+                        <div class="progress-form-row">
+
+                            <div class="progress-field">
+
+                                <label for="mock_interviews">
+                                    Mock Interviews Completed
+                                </label>
+
+                                <input
+                                    type="number"
+                                    id="mock_interviews"
+                                    name="mock_interviews"
+                                    min="0"
+                                    value="{{ progress.mock_interviews if progress else 0 }}"
+                                    required
+                                >
+
+                                <div class="field-description">
+                                    Count completed mock interviews.
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="save-progress">
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary">
+
+                            Save Progress →
+
+                        </button>
+
+                    </div>
+
+
+                </form>
+
+            </section>
+
+
+            <!-- ================= SUMMARY ================= -->
+
+            <aside class="progress-summary">
+
+
+                <div class="summary-card">
+
+                    <h3>
+                        Current Progress
+                    </h3>
+
+                    <p>
+                        Your preparation metrics
+                    </p>
+
+
+                    <div class="summary-score">
+
+                        <div class="summary-score-number">
+                            {{ placement_score }}
+                        </div>
+
+                        <div class="summary-score-label">
+                            Preparation Score / 100
+                        </div>
+
+                    </div>
+
+
+                    <div class="mini-metric">
+
+                        <div class="mini-metric-header">
+
+                            <strong>
+                                Coding
+                            </strong>
+
+                            <span>
+                                {{ coding_percentage }}%
+                            </span>
+
+                        </div>
+
+                        <div class="progress-bar">
+
+                            <div class="progress-fill"
+                                 style="width: {{ coding_percentage }}%;">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="mini-metric">
+
+                        <div class="mini-metric-header">
+
+                            <strong>
+                                SQL
+                            </strong>
+
+                            <span>
+                                {{ sql_percentage }}%
+                            </span>
+
+                        </div>
+
+                        <div class="progress-bar">
+
+                            <div class="progress-fill"
+                                 style="width: {{ sql_percentage }}%;">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="mini-metric">
+
+                        <div class="mini-metric-header">
+
+                            <strong>
+                                Aptitude
+                            </strong>
+
+                            <span>
+                                {{ progress.aptitude_score if progress else 0 }}%
+                            </span>
+
+                        </div>
+
+                        <div class="progress-bar">
+
+                            <div class="progress-fill"
+                                 style="width: {{ progress.aptitude_score if progress else 0 }}%;">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="mini-metric">
+
+                        <div class="mini-metric-header">
+
+                            <strong>
+                                Communication
+                            </strong>
+
+                            <span>
+                                {{ progress.communication_score if progress else 0 }}%
+                            </span>
+
+                        </div>
+
+                        <div class="progress-bar">
+
+                            <div class="progress-fill"
+                                 style="width: {{ progress.communication_score if progress else 0 }}%;">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- TIP -->
+
+                <div class="tip-box">
+
+                    <strong>
+                        💡 Preparation Tip
+                    </strong>
+
+                    <p>
+                        Update your progress regularly. Consistent
+                        tracking helps you understand which areas
+                        need more practice.
+                    </p>
+
+                </div>
+
+
+                <!-- QUICK LINK -->
+
+                <div class="summary-card">
+
+                    <h3>
+                        Continue Your Preparation
+                    </h3>
+
+                    <p>
+                        Explore your technical skill gaps.
+                    </p>
+
+                    <a href="{{ url_for('skill_gap') }}"
+                       class="btn btn-primary"
+                       style="width:100%;">
+                        Analyze Skill Gaps →
+                    </a>
+
+                </div>
+
+
+            </aside>
+
+        </div>
+
+
+        <div class="footer">
+
+            Smart Student Career & Placement Analytics
+
+        </div>
+
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

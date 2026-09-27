@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Analytics | Smart Career Analytics</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+
+        .analytics-header {
+            margin-bottom: 24px;
+        }
+
+        .analytics-header h1 {
+            color: #111827;
+            font-size: 26px;
+            margin-bottom: 6px;
+        }
+
+        .analytics-header p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        /* TOP METRICS */
+
+        .analytics-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 17px;
+            margin-bottom: 22px;
+        }
+
+        .analytics-stat {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .analytics-stat-label {
+            color: #6b7280;
+            font-size: 12px;
+            margin-bottom: 7px;
+        }
+
+        .analytics-stat-value {
+            color: #111827;
+            font-size: 27px;
+            font-weight: 800;
+        }
+
+        .analytics-stat-description {
+            color: #9ca3af;
+            font-size: 11px;
+            margin-top: 4px;
+        }
+
+        /* CHART GRID */
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 1.35fr 0.65fr;
+            gap: 22px;
+            margin-bottom: 22px;
+        }
+
+        .chart-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .chart-card-header {
+            margin-bottom: 20px;
+        }
+
+        .chart-card-header h2 {
+            color: #111827;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .chart-card-header p {
+            color: #6b7280;
+            font-size: 12px;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 300px;
+        }
+
+        .doughnut-wrapper {
+            position: relative;
+            height: 300px;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* SKILLS */
+
+        .skills-analysis-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 22px;
+        }
+
+        .skills-analysis-header {
+            margin-bottom: 22px;
+        }
+
+        .skills-analysis-header h2 {
+            color: #111827;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .skills-analysis-header p {
+            color: #6b7280;
+            font-size: 12px;
+        }
+
+        .technical-skill {
+            margin-bottom: 17px;
+        }
+
+        .technical-skill:last-child {
+            margin-bottom: 0;
+        }
+
+        .technical-skill-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 7px;
+        }
+
+        .technical-skill-name {
+            color: #374151;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .technical-skill-value {
+            color: #4f46e5;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .technical-bar {
+            height: 9px;
+            background: #eef2f7;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .technical-fill {
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                #4f46e5,
+                #6366f1
+            );
+            border-radius: 20px;
+        }
+
+        /* SUMMARY */
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+        }
+
+        .summary-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .summary-card h2 {
+            color: #111827;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .summary-card > p {
+            color: #6b7280;
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 13px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .summary-row:last-child {
+            border-bottom: none;
+        }
+
+        .summary-row span {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .summary-row strong {
+            color: #111827;
+            font-size: 13px;
+        }
+
+        .readiness-box {
+            background: #eef2ff;
+            border: 1px solid #c7d2fe;
+            border-radius: 12px;
+            padding: 18px;
+            margin-top: 18px;
+        }
+
+        .readiness-box strong {
+            color: #3730a3;
+            font-size: 14px;
+        }
+
+        .readiness-box p {
+            color: #4338ca;
+            font-size: 12px;
+            line-height: 1.6;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 1000px) {
+
+            .analytics-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+        @media (max-width: 700px) {
+
+            .analytics-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .chart-wrapper,
+            .doughnut-wrapper {
+                height: 250px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="dashboard-container">
+
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-logo">
+
+            <h2>🎓 Smart Career</h2>
+
+            <p>
+                Student Analytics Platform
+            </p>
+
+        </div>
+
+
+        <nav>
+
+            <a href="{{ url_for('dashboard') }}">
+                📊
+                <span>Dashboard</span>
+            </a>
+
+            <a href="{{ url_for('profile') }}">
+                👤
+                <span>My Profile</span>
+            </a>
+
+            <a href="{{ url_for('progress') }}">
+                📈
+                <span>Progress</span>
+            </a>
+
+            <a href="{{ url_for('analytics') }}" class="active">
+                📊
+                <span>Analytics</span>
+            </a>
+
+            <a href="{{ url_for('skills') }}">
+                💡
+                <span>My Skills</span>
+            </a>
+
+            <a href="{{ url_for('skill_gap') }}">
+                🎯
+                <span>Skill Gap</span>
+            </a>
+
+            <a href="{{ url_for('report') }}">
+                📄
+                <span>Career Report</span>
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <a href="{{ url_for('logout') }}">
+                🚪
+                <span>Logout</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="main-content">
+
+
+        <!-- HEADER -->
+
+        <div class="top-header">
+
+            <div>
+
+                <h1>
+                    Career Analytics
+                </h1>
+
+                <p>
+                    Visualize your preparation and technical skill progress.
+                </p>
+
+            </div>
+
+
+            <div class="welcome-user">
+
+                <div class="user-avatar">
+
+                    {{ session.get('name', 'S')[0]|upper }}
+
+                </div>
+
+                <div>
+
+                    <strong style="color:#111827;">
+                        {{ session.get('name', 'Student') }}
+                    </strong>
+
+                    <div style="font-size:12px;color:#6b7280;">
+                        Student
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= TOP STATS ================= -->
+
+        <div class="analytics-stats">
+
+
+            <div class="analytics-stat">
+
+                <div class="analytics-stat-label">
+                    Preparation Score
+                </div>
+
+                <div class="analytics-stat-value">
+                    {{ placement_score }}/100
+                </div>
+
+                <div class="analytics-stat-description">
+                    Project-defined preparation metric
+                </div>
+
+            </div>
+
+
+            <div class="analytics-stat">
+
+                <div class="analytics-stat-label">
+                    Coding Progress
+                </div>
+
+                <div class="analytics-stat-value">
+                    {{ coding_percentage }}%
+                </div>
+
+                <div class="analytics-stat-description">
+                    Coding practice progress
+                </div>
+
+            </div>
+
+
+            <div class="analytics-stat">
+
+                <div class="analytics-stat-label">
+                    SQL Progress
+                </div>
+
+                <div class="analytics-stat-value">
+                    {{ sql_percentage }}%
+                </div>
+
+                <div class="analytics-stat-description">
+                    SQL practice progress
+                </div>
+
+            </div>
+
+
+            <div class="analytics-stat">
+
+                <div class="analytics-stat-label">
+                    Profile Completion
+                </div>
+
+                <div class="analytics-stat-value">
+                    {{ profile_completion }}%
+                </div>
+
+                <div class="analytics-stat-description">
+                    Career profile completeness
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= CHARTS ================= -->
+
+        <div class="charts-grid">
+
+
+            <!-- BAR CHART -->
+
+            <section class="chart-card">
+
+                <div class="chart-card-header">
+
+                    <h2>
+                        Preparation Performance
+                    </h2>
+
+                    <p>
+                        Comparison of your major preparation areas.
+                    </p>
+
+                </div>
+
+
+                <div class="chart-wrapper">
+
+                    <canvas id="performanceChart"></canvas>
+
+                </div>
+
+            </section>
+
+
+            <!-- DOUGHNUT -->
+
+            <section class="chart-card">
+
+                <div class="chart-card-header">
+
+                    <h2>
+                        Career Progress
+                    </h2>
+
+                    <p>
+                        Overall preparation distribution.
+                    </p>
+
+                </div>
+
+
+                <div class="doughnut-wrapper">
+
+                    <canvas id="progressChart"></canvas>
+
+                </div>
+
+            </section>
+
+
+        </div>
+
+
+        <!-- ================= TECHNICAL SKILLS ================= -->
+
+        <section class="skills-analysis-card">
+
+            <div class="skills-analysis-header">
+
+                <h2>
+                    Technical Skills Analysis
+                </h2>
+
+                <p>
+                    Your current proficiency across recorded technical skills.
+                </p>
+
+            </div>
+
+
+            {% if technical_skills_progress %}
+
+                {% for skill in technical_skills_progress %}
+
+                <div class="technical-skill">
+
+                    <div class="technical-skill-header">
+
+                        <span class="technical-skill-name">
+                            {{ skill.skill_name }}
+                        </span>
+
+                        <span class="technical-skill-value">
+                            {{ skill.skill_level }}%
+                        </span>
+
+                    </div>
+
+
+                    <div class="technical-bar">
+
+                        <div
+                            class="technical-fill"
+                            style="width: {{ skill.skill_level }}%;">
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <div style="
+                    padding:30px;
+                    text-align:center;
+                    color:#6b7280;
+                    background:#f9fafb;
+                    border-radius:10px;
+                ">
+
+                    No technical skills added yet.
+
+                    <br>
+
+                    <a href="{{ url_for('skills') }}"
+                       style="
+                       display:inline-block;
+                       margin-top:10px;
+                       color:#4f46e5;
+                       font-weight:600;
+                       ">
+                        Add Skills →
+                    </a>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+
+        <!-- ================= SUMMARY ================= -->
+
+        <div class="summary-grid">
+
+
+            <!-- PREPARATION SUMMARY -->
+
+            <section class="summary-card">
+
+                <h2>
+                    Preparation Summary
+                </h2>
+
+                <p>
+                    Current progress indicators.
+                </p>
+
+
+                <div class="summary-row">
+
+                    <span>
+                        Coding Problems
+                    </span>
+
+                    <strong>
+                        {{ progress.coding_problems }}
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-row">
+
+                    <span>
+                        SQL Problems
+                    </span>
+
+                    <strong>
+                        {{ progress.sql_problems }}
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-row">
+
+                    <span>
+                        Aptitude Score
+                    </span>
+
+                    <strong>
+                        {{ aptitude_score }}%
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-row">
+
+                    <span>
+                        Communication
+                    </span>
+
+                    <strong>
+                        {{ communication_score }}%
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-row">
+
+                    <span>
+                        Mock Interviews
+                    </span>
+
+                    <strong>
+                        {{ progress.mock_interviews }}
+                    </strong>
+
+                </div>
+
+            </section>
+
+
+            <!-- CAREER STATUS -->
+
+            <section class="summary-card">
+
+                <h2>
+                    Career Preparation Status
+                </h2>
+
+                <p>
+                    Based on the project's preparation tracking model.
+                </p>
+
+
+                <div class="summary-row">
+
+                    <span>
+                        Current Status
+                    </span>
+
+                    <strong>
+                        {{ readiness_level }}
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-row">
+
+                    <span>
+                        Profile
+                    </span>
+
+                    <strong>
+                        {{ profile_completion }}% Complete
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-row">
+
+                    <span>
+                        Technical Skills
+                    </span>
+
+                    <strong>
+                        {{ technical_skills_progress|length }}
+                    </strong>
+
+                </div>
+
+
+                <div class="readiness-box">
+
+                    <strong>
+                        📌 About This Score
+                    </strong>
+
+                    <p>
+                        This is a project-defined preparation score
+                        designed to track student progress. It is not
+                        a prediction of actual placement probability.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+        </div>
+
+
+        <!-- ================= CHART SCRIPT ================= -->
+
+        <script>
+
+            const performanceCanvas =
+                document.getElementById("performanceChart");
+
+            new Chart(performanceCanvas, {
+
+                type: "bar",
+
+                data: {
+
+                    labels: [
+                        "Coding",
+                        "SQL",
+                        "Aptitude",
+                        "Communication"
+                    ],
+
+                    datasets: [{
+
+                        label: "Progress (%)",
+
+                        data: [
+                            {{ coding_percentage }},
+                            {{ sql_percentage }},
+                            {{ aptitude_score }},
+                            {{ communication_score }}
+                        ],
+
+                        borderWidth: 1
+
+                    }]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    scales: {
+
+                        y: {
+
+                            beginAtZero: true,
+
+                            max: 100,
+
+                            ticks: {
+                                stepSize: 20
+                            }
+
+                        }
+
+                    },
+
+                    plugins: {
+
+                        legend: {
+                            display: false
+                        }
+
+                    }
+
+                }
+
+            });
+
+
+            const progressCanvas =
+                document.getElementById("progressChart");
+
+            new Chart(progressCanvas, {
+
+                type: "doughnut",
+
+                data: {
+
+                    labels: [
+                        "Preparation Score",
+                        "Remaining"
+                    ],
+
+                    datasets: [{
+
+                        data: [
+                            {{ placement_score }},
+                            {{ 100 - placement_score }}
+                        ],
+
+                        borderWidth: 0
+
+                    }]
+
+                },
+
+                options: {
+
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    cutout: "72%",
+
+                    plugins: {
+
+                        legend: {
+
+                            position: "bottom"
+
+                        }
+
+                    }
+
+                }
+
+            });
+
+        </script>
+
+
+        <!-- FOOTER -->
+
+        <div class="footer">
+
+            Smart Student Career & Placement Analytics
+
+        </div>
+
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

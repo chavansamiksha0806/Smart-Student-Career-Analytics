@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create Account | Smart Career Analytics</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+
+        .register-page {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 0.9fr 1.1fr;
+            background: #f8fafc;
+        }
+
+        /* ================= LEFT PANEL ================= */
+
+        .register-left {
+            background:
+                radial-gradient(circle at bottom left, #6366f1, transparent 35%),
+                linear-gradient(145deg, #111827, #312e81);
+
+            color: white;
+            padding: 55px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .register-left-content {
+            max-width: 470px;
+        }
+
+        .register-logo {
+            position: absolute;
+            top: 28px;
+            left: 40px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .register-logo-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.14);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .register-left h1 {
+            font-size: 40px;
+            line-height: 1.15;
+            margin-bottom: 18px;
+        }
+
+        .register-left h1 span {
+            color: #a5b4fc;
+        }
+
+        .register-left p {
+            color: #cbd5e1;
+            line-height: 1.7;
+            margin-bottom: 30px;
+            font-size: 15px;
+        }
+
+        .benefit-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .benefit {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #e5e7eb;
+            font-size: 14px;
+        }
+
+        .benefit-icon {
+            width: 35px;
+            height: 35px;
+            border-radius: 9px;
+            background: rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* ================= RIGHT PANEL ================= */
+
+        .register-right {
+            padding: 30px 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+        }
+
+        .register-box {
+            width: 100%;
+            max-width: 550px;
+        }
+
+        .back-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #6b7280;
+            font-size: 13px;
+            margin-bottom: 22px;
+        }
+
+        .back-home:hover {
+            color: #4f46e5;
+        }
+
+        .register-heading {
+            margin-bottom: 20px;
+        }
+
+        .register-heading h2 {
+            color: #111827;
+            font-size: 30px;
+            margin-bottom: 5px;
+        }
+
+        .register-heading p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .register-form {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            padding: 30px;
+            box-shadow: 0 15px 40px rgba(15, 23, 42, 0.07);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .register-form .form-group {
+            margin-bottom: 18px;
+        }
+
+        .register-form label {
+            display: block;
+            color: #374151;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 7px;
+        }
+
+        .register-form input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 9px;
+            outline: none;
+            font-size: 14px;
+            transition: 0.2s ease;
+        }
+
+        .register-form input:focus {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79,70,229,0.1);
+        }
+
+        .password-note {
+            font-size: 11px;
+            color: #9ca3af;
+            margin-top: 5px;
+        }
+
+        .register-form .btn {
+            width: 100%;
+            padding: 13px;
+            margin-top: 5px;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 18px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .login-link a {
+            color: #4f46e5;
+            font-weight: 600;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        .security-note {
+            margin-top: 18px;
+            padding: 12px 14px;
+            border-radius: 9px;
+            background: #f8fafc;
+            color: #6b7280;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        /* ================= MOBILE ================= */
+
+        @media (max-width: 850px) {
+
+            .register-page {
+                grid-template-columns: 1fr;
+            }
+
+            .register-left {
+                display: none;
+            }
+
+            .register-right {
+                min-height: 100vh;
+                padding: 20px;
+            }
+
+        }
+
+        @media (max-width: 550px) {
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .register-form {
+                padding: 22px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="register-page">
+
+    <!-- LEFT PANEL -->
+
+    <section class="register-left">
+
+        <div class="register-logo">
+
+            <div class="register-logo-icon">
+                SC
+            </div>
+
+            <strong>
+                Smart Career Analytics
+            </strong>
+
+        </div>
+
+
+        <div class="register-left-content">
+
+            <h1>
+                Start Building Your
+                <span>Career.</span>
+            </h1>
+
+            <p>
+                Create your student profile and keep your
+                career preparation organized in one smart platform.
+            </p>
+
+
+            <div class="benefit-list">
+
+                <div class="benefit">
+
+                    <div class="benefit-icon">
+                        👤
+                    </div>
+
+                    <span>
+                        Create your personal career profile
+                    </span>
+
+                </div>
+
+
+                <div class="benefit">
+
+                    <div class="benefit-icon">
+                        📈
+                    </div>
+
+                    <span>
+                        Track your preparation progress
+                    </span>
+
+                </div>
+
+
+                <div class="benefit">
+
+                    <div class="benefit-icon">
+                        🎯
+                    </div>
+
+                    <span>
+                        Discover your skill gaps
+                    </span>
+
+                </div>
+
+
+                <div class="benefit">
+
+                    <div class="benefit-icon">
+                        📄
+                    </div>
+
+                    <span>
+                        Generate your career report
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- RIGHT PANEL -->
+
+    <section class="register-right">
+
+        <div class="register-box">
+
+            <a href="{{ url_for('home') }}"
+               class="back-home">
+                ← Back to Home
+            </a>
+
+
+            <div class="register-heading">
+
+                <h2>
+                    Create Account
+                </h2>
+
+                <p>
+                    Start tracking your career preparation today.
+                </p>
+
+            </div>
+
+
+            <div class="register-form">
+
+                <!-- FLASH MESSAGES -->
+
+                {% with messages = get_flashed_messages() %}
+
+                    {% if messages %}
+
+                        {% for message in messages %}
+
+                            <div class="alert alert-danger">
+                                {{ message }}
+                            </div>
+
+                        {% endfor %}
+
+                    {% endif %}
+
+                {% endwith %}
+
+
+                <form method="POST">
+
+                    <!-- NAME + EMAIL -->
+
+                    <div class="form-row">
+
+                        <div class="form-group">
+
+                            <label for="name">
+                                Full Name
+                            </label>
+
+                            <input
+                                type="text"
+                                id="name"
+                                name="name"
+                                placeholder="Enter your full name"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="email">
+                                Email Address
+                            </label>
+
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="Enter your email"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- PASSWORD + CONFIRM -->
+
+                    <div class="form-row">
+
+                        <div class="form-group">
+
+                            <label for="password">
+                                Password
+                            </label>
+
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Create a password"
+                                minlength="6"
+                                required
+                            >
+
+                            <div class="password-note">
+                                Use at least 6 characters.
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="confirm_password">
+                                Confirm Password
+                            </label>
+
+                            <input
+                                type="password"
+                                id="confirm_password"
+                                name="confirm_password"
+                                placeholder="Confirm your password"
+                                minlength="6"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary">
+                        Create Account →
+                    </button>
+
+                </form>
+
+
+                <div class="security-note">
+                    🔒 Your password is securely stored using password hashing.
+                </div>
+
+
+                <div class="login-link">
+
+                    Already have an account?
+
+                    <a href="{{ url_for('login') }}">
+                        Sign in
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+</body>
+</html>

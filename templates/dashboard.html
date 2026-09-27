@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard | Smart Career Analytics</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+
+        /* =====================================================
+           DASHBOARD SPECIFIC STYLES
+           ===================================================== */
+
+        .dashboard-welcome {
+            margin-bottom: 25px;
+        }
+
+        .dashboard-welcome h1 {
+            color: #111827;
+            font-size: 27px;
+            margin-bottom: 4px;
+        }
+
+        .dashboard-welcome p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+
+        /* =====================================================
+           PREPARATION SCORE
+           ===================================================== */
+
+        .score-card {
+            text-align: center;
+        }
+
+        .score-circle {
+            width: 145px;
+            height: 145px;
+            border-radius: 50%;
+            margin: 10px auto 18px;
+
+            background: #eef2ff;
+            border: 10px solid #c7d2fe;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .score-circle strong {
+            color: #4f46e5;
+            font-size: 36px;
+            line-height: 1;
+        }
+
+        .score-circle span {
+            color: #6b7280;
+            font-size: 12px;
+        }
+
+        .readiness {
+            display: inline-block;
+            padding: 7px 14px;
+            border-radius: 20px;
+
+            background: #eef2ff;
+            color: #4338ca;
+
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+
+        /* =====================================================
+           PROFILE COMPLETION
+           ===================================================== */
+
+        .profile-completion {
+            margin-top: 18px;
+            text-align: left;
+        }
+
+        .profile-completion-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 7px;
+            font-size: 13px;
+        }
+
+        .profile-completion-header strong {
+            color: #111827;
+        }
+
+
+        /* =====================================================
+           SECTIONS
+           ===================================================== */
+
+        .dashboard-section {
+            margin-bottom: 25px;
+        }
+
+        .dashboard-section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .dashboard-section-header h2 {
+            font-size: 19px;
+            color: #111827;
+        }
+
+        .dashboard-section-header a {
+            color: #4f46e5;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+
+        /* =====================================================
+           METRICS
+           ===================================================== */
+
+        .metric-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .metric-item {
+            background: #f9fafb;
+            padding: 15px;
+            border-radius: 11px;
+        }
+
+        .metric-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 7px;
+        }
+
+        .metric-header strong {
+            color: #374151;
+            font-size: 14px;
+        }
+
+        .metric-header span {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           CAREER FOCUS
+           ===================================================== */
+
+        .career-card {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .career-icon {
+            width: 55px;
+            height: 55px;
+            flex-shrink: 0;
+
+            border-radius: 14px;
+            background: #eef2ff;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 25px;
+        }
+
+        .career-card h3 {
+            color: #111827;
+            margin-bottom: 4px;
+        }
+
+        .career-card p {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           RECOMMENDATION / ACTION CARDS
+           ===================================================== */
+
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+        }
+
+        .action-card {
+            background: white;
+
+            border: 1px solid #e5e7eb;
+            border-radius: 13px;
+
+            padding: 20px;
+
+            transition: 0.25s ease;
+
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .action-card:hover {
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 8px 25px rgba(15,23,42,0.08);
+
+            border-color: #c7d2fe;
+        }
+
+        .action-icon {
+            width: 42px;
+            height: 42px;
+
+            border-radius: 10px;
+            background: #eef2ff;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin-bottom: 13px;
+
+            font-size: 20px;
+        }
+
+        .action-card h3 {
+            color: #111827;
+            font-size: 15px;
+            margin-bottom: 6px;
+        }
+
+        .action-card p {
+            color: #6b7280;
+            font-size: 12px;
+            margin-bottom: 12px;
+            line-height: 1.6;
+        }
+
+        .action-link {
+            color: #4f46e5;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+
+        /* =====================================================
+           SKILLS
+           ===================================================== */
+
+        .skill-preview {
+            display: flex;
+            flex-direction: column;
+            gap: 17px;
+        }
+
+        .skill-preview-item {
+            display: grid;
+
+            grid-template-columns:
+                90px
+                1fr
+                45px;
+
+            align-items: center;
+
+            gap: 12px;
+        }
+
+        .skill-preview-item strong {
+            color: #374151;
+            font-size: 13px;
+        }
+
+        .skill-preview-item span {
+            color: #6b7280;
+            font-size: 12px;
+            text-align: right;
+        }
+
+
+        /* =====================================================
+           EMPTY STATE
+           ===================================================== */
+
+        .dashboard-empty {
+            padding: 30px;
+            text-align: center;
+
+            background: #f9fafb;
+            border-radius: 12px;
+        }
+
+        .dashboard-empty h3 {
+            color: #111827;
+            margin-bottom: 6px;
+        }
+
+        .dashboard-empty p {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           RECOMMENDATION HEADER
+           ===================================================== */
+
+        .recommendation-intro {
+            color: #6b7280;
+            font-size: 13px;
+            margin-top: 3px;
+        }
+
+
+        /* =====================================================
+           RESPONSIVE
+           ===================================================== */
+
+        @media (max-width: 1000px) {
+
+            .action-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+
+        @media (max-width: 700px) {
+
+            .action-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-section-header {
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .skill-preview-item {
+                grid-template-columns:
+                    75px
+                    1fr
+                    40px;
+            }
+
+            .career-card {
+                align-items: flex-start;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="dashboard-container">
+
+
+    <!-- =====================================================
+         SIDEBAR
+         ===================================================== -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-logo">
+
+            <h2>
+                🎓 Smart Career
+            </h2>
+
+            <p>
+                Student Analytics Platform
+            </p>
+
+        </div>
+
+
+        <nav>
+
+            <a href="{{ url_for('dashboard') }}"
+               class="active">
+
+                📊
+                <span>Dashboard</span>
+
+            </a>
+
+
+            <a href="{{ url_for('profile') }}">
+
+                👤
+                <span>My Profile</span>
+
+            </a>
+
+
+            <a href="{{ url_for('progress') }}">
+
+                📈
+                <span>Progress</span>
+
+            </a>
+
+
+            <a href="{{ url_for('analytics') }}">
+
+                📊
+                <span>Analytics</span>
+
+            </a>
+
+
+            <a href="{{ url_for('skills') }}">
+
+                💡
+                <span>My Skills</span>
+
+            </a>
+
+
+            <a href="{{ url_for('skill_gap') }}">
+
+                🎯
+                <span>Skill Gap</span>
+
+            </a>
+
+
+            <a href="{{ url_for('report') }}">
+
+                📄
+                <span>Career Report</span>
+
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <a href="{{ url_for('logout') }}">
+
+                🚪
+                <span>Logout</span>
+
+            </a>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+         ===================================================== -->
+
+    <main class="main-content">
+
+
+        <!-- =================================================
+             TOP HEADER
+             ================================================= -->
+
+        <div class="top-header">
+
+            <div>
+
+                <h1>
+                    Student Dashboard
+                </h1>
+
+                <p>
+                    Monitor your career preparation and progress.
+                </p>
+
+            </div>
+
+
+            <div class="welcome-user">
+
+                <div class="user-avatar">
+
+                    {{ session.get('user_name', 'Student')[0]|upper }}
+
+                </div>
+
+                <div>
+
+                    <strong style="color:#111827;">
+
+                        {{ session.get('user_name', 'Student') }}
+
+                    </strong>
+
+                    <div style="font-size:12px;color:#6b7280;">
+
+                        Student
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             WELCOME
+             ================================================= -->
+
+        <section class="dashboard-welcome">
+
+            <h1>
+
+                Welcome back,
+                {{ session.get('user_name', 'Student') }}! 👋
+
+            </h1>
+
+            <p>
+
+                Here's an overview of your current career preparation.
+
+            </p>
+
+        </section>
+
+
+
+        <!-- =================================================
+             STAT CARDS
+             ================================================= -->
+
+        <section class="stats-grid">
+
+
+            <!-- CGPA -->
+
+            <div class="stat-card">
+
+                <h4>
+                    CGPA
+                </h4>
+
+                <div class="stat-value">
+
+                    {{ profile.cgpa if profile and profile.cgpa else '—' }}
+
+                </div>
+
+                <div class="stat-description">
+
+                    Academic performance
+
+                </div>
+
+            </div>
+
+
+
+            <!-- CODING -->
+
+            <div class="stat-card">
+
+                <h4>
+                    Coding Problems
+                </h4>
+
+                <div class="stat-value">
+
+                    {{ progress.coding_problems if progress else 0 }}
+
+                </div>
+
+                <div class="stat-description">
+
+                    Problems practiced
+
+                </div>
+
+            </div>
+
+
+
+            <!-- SQL -->
+
+            <div class="stat-card">
+
+                <h4>
+                    SQL Problems
+                </h4>
+
+                <div class="stat-value">
+
+                    {{ progress.sql_problems if progress else 0 }}
+
+                </div>
+
+                <div class="stat-description">
+
+                    SQL practice
+
+                </div>
+
+            </div>
+
+
+
+            <!-- MOCK INTERVIEWS -->
+
+            <div class="stat-card">
+
+                <h4>
+                    Mock Interviews
+                </h4>
+
+                <div class="stat-value">
+
+                    {{ progress.mock_interviews if progress else 0 }}
+
+                </div>
+
+                <div class="stat-description">
+
+                    Interviews completed
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             PREPARATION + SCORE
+             ================================================= -->
+
+        <section class="dashboard-grid">
+
+
+            <!-- PREPARATION OVERVIEW -->
+
+            <div class="card">
+
+                <div class="dashboard-section-header">
+
+                    <div>
+
+                        <h2>
+                            Preparation Overview
+                        </h2>
+
+                        <p style="color:#6b7280;font-size:13px;">
+
+                            Track the areas important for your
+                            career preparation.
+
+                        </p>
+
+                    </div>
+
+                    <a href="{{ url_for('progress') }}">
+
+                        Update →
+
+                    </a>
+
+                </div>
+
+
+
+                <div class="metric-list">
+
+
+                    <!-- CODING -->
+
+                    <div class="metric-item">
+
+                        <div class="metric-header">
+
+                            <strong>
+                                Coding Practice
+                            </strong>
+
+                            <span>
+
+                                {{ progress.coding_problems
+                                   if progress else 0 }}
+
+                                problems
+
+                            </span>
+
+                        </div>
+
+                        <div class="progress-bar">
+
+                            <div class="progress-fill"
+
+                                 style="width:
+                                 {{ [((progress.coding_problems
+                                 if progress else 0) / 100 * 100), 100]
+                                 |min }}%;">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- SQL -->
+
+                    <div class="metric-item">
+
+                        <div class="metric-header">
+
+                            <strong>
+                                SQL Practice
+                            </strong>
+
+                            <span>
+
+                                {{ progress.sql_problems
+                                   if progress else 0 }}
+
+                                problems
+
+                            </span>
+
+                        </div>
+
+                        <div class="progress-bar">
+
+                            <div class="progress-fill"
+
+                                 style="width:
+                                 {{ [((progress.sql_problems
+                                 if progress else 0) / 50 * 100), 100]
+                                 |min }}%;">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- APTITUDE -->
+
+                    <div class="metric-item">
+
+                        <div class="metric-header">
+
+                            <strong>
+                                Aptitude
+                            </strong>
+
+                            <span>
+
+                                {{ progress.aptitude_score
+                                   if progress else 0 }}%
+
+                            </span>
+
+                        </div>
+
+                        <div class="progress-bar">
+
+                            <div class="progress-fill"
+
+                                 style="width:
+                                 {{ progress.aptitude_score
+                                    if progress else 0 }}%;">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- COMMUNICATION -->
+
+                    <div class="metric-item">
+
+                        <div class="metric-header">
+
+                            <strong>
+                                Communication
+                            </strong>
+
+                            <span>
+
+                                {{ progress.communication_score
+                                   if progress else 0 }}%
+
+                            </span>
+
+                        </div>
+
+                        <div class="progress-bar">
+
+                            <div class="progress-fill"
+
+                                 style="width:
+                                 {{ progress.communication_score
+                                    if progress else 0 }}%;">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+
+            <!-- PREPARATION SCORE -->
+
+            <div class="card score-card">
+
+                <h3>
+                    Career Preparation
+                </h3>
+
+                <p style="font-size:12px;color:#6b7280;">
+
+                    Project-defined preparation score
+
+                </p>
+
+
+                <div class="score-circle">
+
+                    <strong>
+
+                        {{ preparation_score }}
+
+                    </strong>
+
+                    <span>
+                        out of 100
+                    </span>
+
+                </div>
+
+
+                <div class="readiness">
+
+                    {{ readiness_level }}
+
+                </div>
+
+
+                <div class="profile-completion">
+
+                    <div class="profile-completion-header">
+
+                        <strong>
+                            Profile Completion
+                        </strong>
+
+                        <span>
+                            {{ profile_completion }}%
+                        </span>
+
+                    </div>
+
+
+                    <div class="progress-bar">
+
+                        <div class="progress-fill"
+
+                             style="width:
+                             {{ profile_completion }}%;">
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             TECHNICAL SKILLS + CAREER FOCUS
+             ================================================= -->
+
+        <section class="dashboard-grid">
+
+
+            <!-- TECHNICAL SKILLS -->
+
+            <div class="card">
+
+                <div class="dashboard-section-header">
+
+                    <div>
+
+                        <h2>
+                            Technical Skills
+                        </h2>
+
+                        <p style="color:#6b7280;font-size:13px;">
+
+                            Your current skill levels
+
+                        </p>
+
+                    </div>
+
+                    <a href="{{ url_for('skills') }}">
+
+                        Manage →
+
+                    </a>
+
+                </div>
+
+
+                {% if skills %}
+
+                    <div class="skill-preview">
+
+                        {% for skill in skills[:5] %}
+
+                            <div class="skill-preview-item">
+
+                                <strong>
+
+                                    {{ skill.skill_name }}
+
+                                </strong>
+
+
+                                <div class="skill-bar">
+
+                                    <div class="skill-fill"
+
+                                         style="width:
+                                         {{ skill.skill_level }}%;">
+
+                                    </div>
+
+                                </div>
+
+
+                                <span>
+
+                                    {{ skill.skill_level }}%
+
+                                </span>
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% else %}
+
+                    <div class="dashboard-empty">
+
+                        <h3>
+                            No skills added yet
+                        </h3>
+
+                        <p>
+
+                            Add your technical skills to
+                            start tracking them.
+
+                        </p>
+
+                        <br>
+
+                        <a href="{{ url_for('skills') }}"
+                           class="btn btn-primary">
+
+                            Add Skills
+
+                        </a>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+
+            <!-- CAREER FOCUS -->
+
+            <div class="card">
+
+                <div class="dashboard-section-header">
+
+                    <h2>
+                        Career Focus
+                    </h2>
+
+                </div>
+
+
+                <div class="career-card">
+
+                    <div class="career-icon">
+
+                        🚀
+
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            Build Your Career
+                        </h3>
+
+                        <p>
+
+                            Strengthen your coding,
+                            database, development and
+                            communication skills.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div style="margin-top:22px;">
+
+                    <a href="{{ url_for('skill_gap') }}"
+                       class="btn btn-primary">
+
+                        View Skill Gaps →
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             DYNAMIC RECOMMENDED NEXT STEPS
+             ================================================= -->
+
+        <section class="dashboard-section">
+
+            <div class="dashboard-section-header">
+
+                <div>
+
+                    <h2>
+                        🚀 Recommended Next Steps
+                    </h2>
+
+                    <p class="recommendation-intro">
+
+                        Personalized recommendations based
+                        on your current skills and progress.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            {% if recommendations %}
+
+                <div class="action-grid">
+
+                    {% for item in recommendations %}
+
+                        <a href="{{ item.link }}"
+                           class="action-card">
+
+
+                            <div class="action-icon">
+
+                                🚀
+
+                            </div>
+
+
+                            <h3>
+
+                                {{ item.title }}
+
+                            </h3>
+
+
+                            <p>
+
+                                {{ item.description }}
+
+                            </p>
+
+
+                            <div class="action-link">
+
+                                Work on this →
+
+                            </div>
+
+
+                        </a>
+
+                    {% endfor %}
+
+                </div>
+
+
+            {% else %}
+
+                <div class="dashboard-empty">
+
+                    <h3>
+                        🎉 You're doing great!
+                    </h3>
+
+                    <p>
+
+                        No immediate recommendations.
+                        Keep improving your preparation.
+
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+
+
+        <!-- =================================================
+             QUICK ACTIONS
+             ================================================= -->
+
+        <section class="dashboard-section">
+
+            <div class="dashboard-section-header">
+
+                <div>
+
+                    <h2>
+                        Quick Actions
+                    </h2>
+
+                    <p class="recommendation-intro">
+
+                        Manage your career preparation
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="action-grid">
+
+
+                <!-- PROFILE -->
+
+                <a href="{{ url_for('profile') }}"
+                   class="action-card">
+
+                    <div class="action-icon">
+
+                        👤
+
+                    </div>
+
+                    <h3>
+
+                        Update Profile
+
+                    </h3>
+
+                    <p>
+
+                        Keep your education and project
+                        details updated.
+
+                    </p>
+
+                    <div class="action-link">
+
+                        Open Profile →
+
+                    </div>
+
+                </a>
+
+
+
+                <!-- PROGRESS -->
+
+                <a href="{{ url_for('progress') }}"
+                   class="action-card">
+
+                    <div class="action-icon">
+
+                        📈
+
+                    </div>
+
+                    <h3>
+
+                        Update Progress
+
+                    </h3>
+
+                    <p>
+
+                        Record coding, SQL, aptitude
+                        and interview progress.
+
+                    </p>
+
+                    <div class="action-link">
+
+                        Update Progress →
+
+                    </div>
+
+                </a>
+
+
+
+                <!-- SKILL GAP -->
+
+                <a href="{{ url_for('skill_gap') }}"
+                   class="action-card">
+
+                    <div class="action-icon">
+
+                        🎯
+
+                    </div>
+
+                    <h3>
+
+                        Skill Gap
+
+                    </h3>
+
+                    <p>
+
+                        Find the technical areas that
+                        need more practice.
+
+                    </p>
+
+                    <div class="action-link">
+
+                        Analyze Skills →
+
+                    </div>
+
+                </a>
+
+
+
+                <!-- REPORT -->
+
+                <a href="{{ url_for('report') }}"
+                   class="action-card">
+
+                    <div class="action-icon">
+
+                        📄
+
+                    </div>
+
+                    <h3>
+
+                        Career Report
+
+                    </h3>
+
+                    <p>
+
+                        View your complete career
+                        preparation report.
+
+                    </p>
+
+                    <div class="action-link">
+
+                        View Report →
+
+                    </div>
+
+                </a>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             FOOTER
+             ================================================= -->
+
+        <div class="footer">
+
+            Smart Student Career & Placement Analytics
+
+            <br>
+
+            <span>
+
+                A student preparation and progress
+                tracking project
+
+            </span>
+
+        </div>
+
+
+    </main>
+
+</div>
+
+
+</body>
+
+</html>

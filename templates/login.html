@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | Smart Career Analytics</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+
+        .auth-page {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: #f8fafc;
+        }
+
+        /* LEFT SIDE */
+
+        .auth-left {
+            background:
+                radial-gradient(circle at top left, #6366f1, transparent 35%),
+                linear-gradient(145deg, #111827, #312e81);
+
+            color: white;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .auth-brand {
+            position: absolute;
+            top: 28px;
+            left: 40px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .auth-brand-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.15);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 700;
+        }
+
+        .auth-left-content {
+            max-width: 500px;
+            margin: auto;
+        }
+
+        .auth-left h1 {
+            font-size: 43px;
+            line-height: 1.15;
+            margin-bottom: 18px;
+        }
+
+        .auth-left h1 span {
+            color: #a5b4fc;
+        }
+
+        .auth-left > .auth-left-content > p {
+            color: #cbd5e1;
+            font-size: 16px;
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+
+        .auth-features {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .auth-feature {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #e5e7eb;
+            font-size: 14px;
+        }
+
+        .auth-feature-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
+            background: rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* RIGHT SIDE */
+
+        .auth-right {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+        }
+
+        .login-box {
+            width: 100%;
+            max-width: 430px;
+        }
+
+        .login-heading {
+            margin-bottom: 28px;
+        }
+
+        .login-heading h2 {
+            font-size: 30px;
+            color: #111827;
+            margin-bottom: 6px;
+        }
+
+        .login-heading p {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .login-form {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 18px;
+            padding: 30px;
+            box-shadow: 0 15px 40px rgba(15, 23, 42, 0.07);
+        }
+
+        .login-form .form-group {
+            margin-bottom: 20px;
+        }
+
+        .login-form label {
+            display: block;
+            color: #374151;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 7px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper span {
+            position: absolute;
+            left: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+        }
+
+        .input-wrapper input {
+            padding-left: 42px;
+        }
+
+        .login-form .btn {
+            width: 100%;
+            margin-top: 5px;
+            padding: 13px;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 20px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .register-link a {
+            color: #4f46e5;
+            font-weight: 600;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+        .back-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #6b7280;
+            font-size: 13px;
+            margin-bottom: 25px;
+        }
+
+        .back-home:hover {
+            color: #4f46e5;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 800px) {
+
+            .auth-page {
+                grid-template-columns: 1fr;
+            }
+
+            .auth-left {
+                display: none;
+            }
+
+            .auth-right {
+                min-height: 100vh;
+                padding: 20px;
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+<div class="auth-page">
+
+    <!-- LEFT PANEL -->
+
+    <section class="auth-left">
+
+        <div class="auth-brand">
+
+            <div class="auth-brand-icon">
+                SC
+            </div>
+
+            <strong>
+                Smart Career Analytics
+            </strong>
+
+        </div>
+
+
+        <div class="auth-left-content">
+
+            <h1>
+                Welcome
+                <span>Back.</span>
+            </h1>
+
+            <p>
+                Continue tracking your skills, coding practice,
+                projects and career preparation from one place.
+            </p>
+
+
+            <div class="auth-features">
+
+                <div class="auth-feature">
+
+                    <div class="auth-feature-icon">
+                        📊
+                    </div>
+
+                    <span>
+                        Track your career preparation
+                    </span>
+
+                </div>
+
+
+                <div class="auth-feature">
+
+                    <div class="auth-feature-icon">
+                        🎯
+                    </div>
+
+                    <span>
+                        Identify your skill gaps
+                    </span>
+
+                </div>
+
+
+                <div class="auth-feature">
+
+                    <div class="auth-feature-icon">
+                        📄
+                    </div>
+
+                    <span>
+                        Generate your career report
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- RIGHT PANEL -->
+
+    <section class="auth-right">
+
+        <div class="login-box">
+
+            <a href="{{ url_for('home') }}"
+               class="back-home">
+                ← Back to Home
+            </a>
+
+
+            <div class="login-heading">
+
+                <h2>
+                    Sign in
+                </h2>
+
+                <p>
+                    Enter your account details to continue.
+                </p>
+
+            </div>
+
+
+            <div class="login-form">
+
+                <!-- FLASH MESSAGES -->
+
+                {% with messages = get_flashed_messages() %}
+
+                    {% if messages %}
+
+                        {% for message in messages %}
+
+                            <div class="alert alert-danger">
+                                {{ message }}
+                            </div>
+
+                        {% endfor %}
+
+                    {% endif %}
+
+                {% endwith %}
+
+
+                <form method="POST">
+
+                    <div class="form-group">
+
+                        <label for="email">
+                            Email Address
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span>✉</span>
+
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="Enter your email"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="password">
+                            Password
+                        </label>
+
+                        <div class="input-wrapper">
+
+                            <span>🔒</span>
+
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Enter your password"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary">
+                        Sign In →
+                    </button>
+
+                </form>
+
+
+                <div class="register-link">
+
+                    Don't have an account?
+
+                    <a href="{{ url_for('register') }}">
+                        Create an account
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+</body>
+</html>

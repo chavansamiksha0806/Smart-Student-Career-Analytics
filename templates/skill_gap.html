@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Skill Gap Analysis | Smart Career</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+
+<div class="dashboard-container">
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-logo">
+
+            <div class="logo-icon">
+                SC
+            </div>
+
+            <div>
+                <h2>Smart Career</h2>
+                <p>Student Analytics</p>
+            </div>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <a href="{{ url_for('dashboard') }}">
+                📊
+                <span>Dashboard</span>
+            </a>
+
+            <a href="{{ url_for('profile') }}">
+                👤
+                <span>My Profile</span>
+            </a>
+
+            <a href="{{ url_for('progress') }}">
+                📈
+                <span>Progress</span>
+            </a>
+
+            <a href="{{ url_for('analytics') }}">
+                📊
+                <span>Analytics</span>
+            </a>
+
+            <a href="{{ url_for('skills') }}">
+                💡
+                <span>My Skills</span>
+            </a>
+
+            <a href="{{ url_for('skill_gap') }}" class="active">
+                🎯
+                <span>Skill Gap</span>
+            </a>
+
+            <a href="{{ url_for('report') }}">
+                📄
+                <span>Career Report</span>
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <a href="{{ url_for('logout') }}">
+                🚪
+                <span>Logout</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <main class="main-content">
+
+
+        <!-- ================= TOP HEADER ================= -->
+
+        <header class="top-header">
+
+            <div class="welcome-user">
+
+                <h1>Skill Gap Analysis</h1>
+
+                <p>
+                    Understand your strengths and identify the skills
+                    you should improve for your career preparation.
+                </p>
+
+            </div>
+
+
+            <div class="user-avatar">
+
+                {{ session.get('user_name', 'Student')[0]|upper }}
+
+            </div>
+
+        </header>
+
+
+
+        <!-- ================= PAGE HEADER ================= -->
+
+        <section class="page-title">
+
+            <div>
+
+                <h2>🎯 Skill Gap Analysis</h2>
+
+                <p>
+                    Compare your current technical skills with
+                    common skills used in student placement preparation.
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ================= SUMMARY ================= -->
+
+        <section class="stats-grid">
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    🟢
+                </div>
+
+                <div>
+
+                    <h3>
+                        {{ strong_skills|length }}
+                    </h3>
+
+                    <p>
+                        Strong Skills
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    🟡
+                </div>
+
+                <div>
+
+                    <h3>
+                        {{ practice_skills|length }}
+                    </h3>
+
+                    <p>
+                        Need Practice
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    🔴
+                </div>
+
+                <div>
+
+                    <h3>
+                        {{ priority_skills|length }}
+                    </h3>
+
+                    <p>
+                        Priority Skills
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon">
+                    🎯
+                </div>
+
+                <div>
+
+                    <h3>
+                        {{ missing_skills|length }}
+                    </h3>
+
+                    <p>
+                        Missing Skills
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- ================= SKILL ANALYSIS ================= -->
+
+        <section class="card">
+
+            <div class="section-title">
+
+                <div>
+
+                    <h2>
+                        Technical Skill Analysis
+                    </h2>
+
+                    <p>
+                        Your current proficiency level for each
+                        recorded skill.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            {% if skills %}
+
+                <div class="skills-analysis">
+
+                    {% for skill in skills %}
+
+                        <div class="skill-analysis-item">
+
+                            <div class="skill-analysis-header">
+
+                                <strong>
+                                    {{ skill.skill_name }}
+                                </strong>
+
+                                <span>
+                                    {{ skill.skill_level }}%
+                                </span>
+
+                            </div>
+
+
+                            <div class="skill-bar">
+
+                                <div
+                                    class="skill-fill"
+                                    style="width: {{ skill.skill_level }}%;">
+                                </div>
+
+                            </div>
+
+
+                            <div class="skill-status">
+
+                                {% if skill.skill_level >= 75 %}
+
+                                    <span class="badge badge-success">
+                                        Strong
+                                    </span>
+
+                                {% elif skill.skill_level >= 50 %}
+
+                                    <span class="badge badge-warning">
+                                        Needs Practice
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge badge-danger">
+                                        Priority
+                                    </span>
+
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+                        💡
+                    </div>
+
+                    <h3>
+                        No Skills Added Yet
+                    </h3>
+
+                    <p>
+                        Add your technical skills to start
+                        analysing your skill gaps.
+                    </p>
+
+                    <a
+                        href="{{ url_for('skills') }}"
+                        class="btn btn-primary">
+
+                        Add Skills →
+
+                    </a>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+
+
+        <!-- ================= SKILL CATEGORIES ================= -->
+
+        <section class="dashboard-grid">
+
+
+            <!-- ================= STRONG SKILLS ================= -->
+
+            <div class="card">
+
+                <div class="section-title">
+
+                    <div>
+
+                        <h2>
+                            🟢 Strong Skills
+                        </h2>
+
+                        <p>
+                            Skills currently at a strong level.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                {% if strong_skills %}
+
+                    <div class="skill-list">
+
+                        {% for skill in strong_skills %}
+
+                            <div class="skill-list-item">
+
+                                <span>
+                                    {{ skill.skill_name }}
+                                </span>
+
+                                <span class="badge badge-success">
+                                    {{ skill.skill_level }}%
+                                </span>
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% else %}
+
+                    <div class="empty-state small">
+
+                        <p>
+                            No strong skills yet.
+                        </p>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+
+            <!-- ================= NEED PRACTICE ================= -->
+
+            <div class="card">
+
+                <div class="section-title">
+
+                    <div>
+
+                        <h2>
+                            🟡 Need Practice
+                        </h2>
+
+                        <p>
+                            Skills that can improve with regular practice.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                {% if practice_skills %}
+
+                    <div class="skill-list">
+
+                        {% for skill in practice_skills %}
+
+                            <div class="skill-list-item">
+
+                                <span>
+                                    {{ skill.skill_name }}
+                                </span>
+
+                                <span class="badge badge-warning">
+                                    {{ skill.skill_level }}%
+                                </span>
+
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                {% else %}
+
+                    <div class="empty-state small">
+
+                        <p>
+                            No skills in this category.
+                        </p>
+
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- ================= PRIORITY SKILLS ================= -->
+
+        <section class="card">
+
+            <div class="section-title">
+
+                <div>
+
+                    <h2>
+                        🔴 Priority Skills
+                    </h2>
+
+                    <p>
+                        These skills should receive additional
+                        attention in your learning plan.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            {% if priority_skills %}
+
+                <div class="skill-list">
+
+                    {% for skill in priority_skills %}
+
+                        <div class="skill-list-item">
+
+                            <div>
+
+                                <strong>
+                                    {{ skill.skill_name }}
+                                </strong>
+
+                                <p>
+                                    Current level:
+                                    {{ skill.skill_level }}%
+                                </p>
+
+                            </div>
+
+
+                            <span class="badge badge-danger">
+                                Priority
+                            </span>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <div class="empty-state small">
+
+                    <p>
+                        No priority skills identified.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+
+
+        <!-- ================= MISSING SKILLS ================= -->
+
+        <section class="card">
+
+            <div class="section-title">
+
+                <div>
+
+                    <h2>
+                        🎯 Placement Skill Gaps
+                    </h2>
+
+                    <p>
+                        Common technical areas included in this
+                        project's placement preparation checklist.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            {% if missing_skills %}
+
+                <div class="gap-grid">
+
+                    {% for skill in missing_skills %}
+
+                        <div class="gap-card">
+
+                            <div class="gap-icon">
+                                📚
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    {{ skill.skill_name }}
+                                </h3>
+
+                                <p>
+                                    This skill is not currently
+                                    recorded in your profile.
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+                        🎉
+                    </div>
+
+                    <h3>
+                        All Core Skills Added
+                    </h3>
+
+                    <p>
+                        You have recorded all skills in the
+                        current placement preparation checklist.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+
+
+        <!-- ================= LEARNING PLAN ================= -->
+
+        <section class="card">
+
+            <div class="section-title">
+
+                <div>
+
+                    <h2>
+                        📚 Recommended Learning Plan
+                    </h2>
+
+                    <p>
+                        Your learning plan is automatically
+                        generated from your current skill levels.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            {% if learning_plan %}
+
+                <div class="recommendation-grid">
+
+                    {% for item in learning_plan %}
+
+                        <div class="recommendation-card">
+
+                            <div class="recommendation-icon">
+                                🚀
+                            </div>
+
+                            <div>
+
+                                <h3>
+                                    {{ item.skill }}
+                                </h3>
+
+                                <p>
+                                    Current Level:
+                                    <strong>
+                                        {{ item.level }}%
+                                    </strong>
+                                </p>
+
+                                <p>
+                                    {{ item.resource }}
+                                </p>
+
+                                {% if item.priority == "High" %}
+
+                                    <span class="badge badge-danger">
+                                        High Priority
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge badge-warning">
+                                        Medium Priority
+                                    </span>
+
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <div class="empty-state small">
+
+                    <p>
+                        Your learning plan will appear here
+                        after analysing your skills.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+
+
+        <!-- ================= FOOTER ================= -->
+
+        <footer class="footer">
+
+            <p>
+                Smart Student Career & Placement Analytics
+            </p>
+
+            <span>
+                A student preparation and progress tracking project
+            </span>
+
+        </footer>
+
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

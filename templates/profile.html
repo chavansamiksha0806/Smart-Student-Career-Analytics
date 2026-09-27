@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Profile | Smart Career Analytics</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+
+        .profile-layout {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 22px;
+        }
+
+        .profile-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            height: fit-content;
+        }
+
+        .profile-avatar {
+            width: 95px;
+            height: 95px;
+            margin: 5px auto 15px;
+            border-radius: 50%;
+            background: #eef2ff;
+            color: #4f46e5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 36px;
+            font-weight: 700;
+            border: 5px solid #c7d2fe;
+        }
+
+        .profile-card h2 {
+            color: #111827;
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .profile-card .email {
+            color: #6b7280;
+            font-size: 13px;
+            word-break: break-word;
+        }
+
+        .profile-badge {
+            display: inline-block;
+            margin-top: 14px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: #eef2ff;
+            color: #4338ca;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .profile-side-info {
+            margin-top: 25px;
+            text-align: left;
+            border-top: 1px solid #e5e7eb;
+            padding-top: 20px;
+        }
+
+        .side-info-item {
+            margin-bottom: 15px;
+        }
+
+        .side-info-item small {
+            display: block;
+            color: #9ca3af;
+            font-size: 11px;
+            margin-bottom: 2px;
+        }
+
+        .side-info-item strong {
+            color: #374151;
+            font-size: 13px;
+        }
+
+        .profile-form-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 15px;
+            padding: 28px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .profile-form-header {
+            padding-bottom: 20px;
+            margin-bottom: 22px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .profile-form-header h2 {
+            color: #111827;
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .profile-form-header p {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .form-section {
+            margin-bottom: 28px;
+        }
+
+        .form-section-title {
+            color: #111827;
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .profile-form-card .form-group {
+            margin-bottom: 17px;
+        }
+
+        .profile-form-card label {
+            display: block;
+            color: #374151;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 7px;
+        }
+
+        .profile-form-card input,
+        .profile-form-card select,
+        .profile-form-card textarea {
+            width: 100%;
+            padding: 12px 13px;
+            border: 1px solid #d1d5db;
+            border-radius: 9px;
+            font-size: 13px;
+            outline: none;
+            transition: 0.2s ease;
+        }
+
+        .profile-form-card input:focus,
+        .profile-form-card select:focus,
+        .profile-form-card textarea:focus {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79,70,229,0.1);
+        }
+
+        .profile-form-card textarea {
+            min-height: 90px;
+        }
+
+        .field-hint {
+            color: #9ca3af;
+            font-size: 11px;
+            margin-top: 5px;
+        }
+
+        .save-area {
+            display: flex;
+            justify-content: flex-end;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        @media (max-width: 900px) {
+
+            .profile-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .profile-card {
+                text-align: center;
+            }
+
+            .profile-side-info {
+                text-align: center;
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .profile-form-card {
+                padding: 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="dashboard-container">
+
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-logo">
+
+            <h2>🎓 Smart Career</h2>
+
+            <p>
+                Student Analytics Platform
+            </p>
+
+        </div>
+
+
+        <nav>
+
+            <a href="{{ url_for('dashboard') }}">
+                📊
+                <span>Dashboard</span>
+            </a>
+
+            <a href="{{ url_for('profile') }}" class="active">
+                👤
+                <span>My Profile</span>
+            </a>
+
+            <a href="{{ url_for('progress') }}">
+                📈
+                <span>Progress</span>
+            </a>
+
+            <a href="{{ url_for('analytics') }}">
+                📊
+                <span>Analytics</span>
+            </a>
+
+            <a href="{{ url_for('skills') }}">
+                💡
+                <span>My Skills</span>
+            </a>
+
+            <a href="{{ url_for('skill_gap') }}">
+                🎯
+                <span>Skill Gap</span>
+            </a>
+
+            <a href="{{ url_for('report') }}">
+                📄
+                <span>Career Report</span>
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <a href="{{ url_for('logout') }}">
+                🚪
+                <span>Logout</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ================= MAIN ================= -->
+
+    <main class="main-content">
+
+
+        <!-- HEADER -->
+
+        <div class="top-header">
+
+            <div>
+
+                <h1>
+                    My Profile
+                </h1>
+
+                <p>
+                    Manage your education and career information.
+                </p>
+
+            </div>
+
+
+            <div class="welcome-user">
+
+                <div class="user-avatar">
+
+                    {{ session.get('name', 'S')[0]|upper }}
+
+                </div>
+
+                <div>
+
+                    <strong style="color:#111827;">
+                        {{ session.get('name', 'Student') }}
+                    </strong>
+
+                    <div style="font-size:12px;color:#6b7280;">
+                        Student
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- PROFILE CONTENT -->
+
+        <div class="profile-layout">
+
+
+            <!-- ================= PROFILE SUMMARY ================= -->
+
+            <aside class="profile-card">
+
+                <div class="profile-avatar">
+
+                    {{ session.get('name', 'S')[0]|upper }}
+
+                </div>
+
+
+                <h2>
+                    {{ session.get('name', 'Student') }}
+                </h2>
+
+
+                <div class="email">
+
+                    {{ session.get('email', '') }}
+
+                </div>
+
+
+                <span class="profile-badge">
+                    Student
+                </span>
+
+
+                <div class="profile-side-info">
+
+
+                    <div class="side-info-item">
+
+                        <small>
+                            College
+                        </small>
+
+                        <strong>
+                            {{ profile.college if profile and profile.college else 'Not added' }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="side-info-item">
+
+                        <small>
+                            Course
+                        </small>
+
+                        <strong>
+                            {{ profile.course if profile and profile.course else 'Not added' }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="side-info-item">
+
+                        <small>
+                            Academic Year
+                        </small>
+
+                        <strong>
+                            {{ profile.year if profile and profile.year else 'Not added' }}
+                        </strong>
+
+                    </div>
+
+
+                    <div class="side-info-item">
+
+                        <small>
+                            CGPA
+                        </small>
+
+                        <strong>
+                            {{ profile.cgpa if profile and profile.cgpa else 'Not added' }}
+                        </strong>
+
+                    </div>
+
+
+                </div>
+
+            </aside>
+
+
+            <!-- ================= PROFILE FORM ================= -->
+
+            <section class="profile-form-card">
+
+
+                <div class="profile-form-header">
+
+                    <h2>
+                        Student Information
+                    </h2>
+
+                    <p>
+                        Keep your profile updated to improve your career analytics.
+                    </p>
+
+                </div>
+
+
+                <form method="POST">
+
+
+                    <!-- ACADEMIC DETAILS -->
+
+                    <div class="form-section">
+
+                        <div class="form-section-title">
+                            🎓
+                            Academic Details
+                        </div>
+
+
+                        <div class="form-row">
+
+                            <div class="form-group">
+
+                                <label for="college">
+                                    College / University
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="college"
+                                    name="college"
+                                    value="{{ profile.college if profile else '' }}"
+                                    placeholder="Enter your college"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="course">
+                                    Course
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="course"
+                                    name="course"
+                                    value="{{ profile.course if profile else '' }}"
+                                    placeholder="e.g. B.Sc. Computer Science"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-row">
+
+                            <div class="form-group">
+
+                                <label for="year">
+                                    Academic Year
+                                </label>
+
+                                <select
+                                    id="year"
+                                    name="year"
+                                    required
+                                >
+
+                                    <option value="">
+                                        Select year
+                                    </option>
+
+                                    <option value="First Year"
+                                        {% if profile and profile.year == 'First Year' %}selected{% endif %}>
+                                        First Year
+                                    </option>
+
+                                    <option value="Second Year"
+                                        {% if profile and profile.year == 'Second Year' %}selected{% endif %}>
+                                        Second Year
+                                    </option>
+
+                                    <option value="Third Year"
+                                        {% if profile and profile.year == 'Third Year' %}selected{% endif %}>
+                                        Third Year
+                                    </option>
+
+                                    <option value="Fourth Year"
+                                        {% if profile and profile.year == 'Fourth Year' %}selected{% endif %}>
+                                        Fourth Year
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="cgpa">
+                                    CGPA
+                                </label>
+
+                                <input
+                                    type="number"
+                                    id="cgpa"
+                                    name="cgpa"
+                                    step="0.01"
+                                    min="0"
+                                    max="10"
+                                    value="{{ profile.cgpa if profile else '' }}"
+                                    placeholder="e.g. 8.50"
+                                    required
+                                >
+
+                                <div class="field-hint">
+                                    Enter CGPA between 0 and 10.
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- SKILLS -->
+
+                    <div class="form-section">
+
+                        <div class="form-section-title">
+                            💡
+                            Technical Skills
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="skills">
+                                Skills
+                            </label>
+
+                            <textarea
+                                id="skills"
+                                name="skills"
+                                placeholder="e.g. Python, SQL, HTML, CSS, Flask, Git"
+                            >{{ profile.skills if profile else '' }}</textarea>
+
+                            <div class="field-hint">
+                                Separate multiple skills using commas.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- CERTIFICATIONS -->
+
+                    <div class="form-section">
+
+                        <div class="form-section-title">
+                            🏆
+                            Certifications
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="certifications">
+                                Certifications
+                            </label>
+
+                            <textarea
+                                id="certifications"
+                                name="certifications"
+                                placeholder="e.g. Python Programming, SQL, Data Analysis"
+                            >{{ profile.certifications if profile else '' }}</textarea>
+
+                            <div class="field-hint">
+                                Add your completed certifications.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- PROJECTS -->
+
+                    <div class="form-section">
+
+                        <div class="form-section-title">
+                            🚀
+                            Projects
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="projects">
+                                Projects
+                            </label>
+
+                            <textarea
+                                id="projects"
+                                name="projects"
+                                placeholder="e.g. Student Performance Prediction, Smart Career Analytics"
+                            >{{ profile.projects if profile else '' }}</textarea>
+
+                            <div class="field-hint">
+                                Add your academic, personal or GitHub projects.
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- INTERNSHIP -->
+
+                    <div class="form-section">
+
+                        <div class="form-section-title">
+                            💼
+                            Internship Experience
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="internship">
+                                Internship
+                            </label>
+
+                            <select
+                                id="internship"
+                                name="internship"
+                            >
+
+                                <option value="No"
+                                    {% if not profile or profile.internship == 'No' %}selected{% endif %}>
+                                    No internship yet
+                                </option>
+
+                                <option value="Yes"
+                                    {% if profile and profile.internship == 'Yes' %}selected{% endif %}>
+                                    Yes
+                                </option>
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- SAVE -->
+
+                    <div class="save-area">
+
+                        <button
+                            type="submit"
+                            class="btn btn-primary">
+
+                            Save Profile →
+
+                        </button>
+
+                    </div>
+
+
+                </form>
+
+            </section>
+
+        </div>
+
+
+        <div class="footer">
+
+            Smart Student Career & Placement Analytics
+
+        </div>
+
+
+    </main>
+
+</div>
+
+</body>
+
+</html>

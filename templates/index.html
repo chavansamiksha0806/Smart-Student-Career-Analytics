@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Smart Career Analytics</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        .hero {
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at top right, #e0e7ff 0%, transparent 35%),
+                linear-gradient(135deg, #f8fafc, #eef2ff);
+        }
+
+        .navbar {
+            max-width: 1200px;
+            margin: auto;
+            padding: 22px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: #4f46e5;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .brand-text h2 {
+            font-size: 18px;
+            color: #111827;
+        }
+
+        .brand-text span {
+            color: #6b7280;
+            font-size: 11px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .hero-content {
+            max-width: 1100px;
+            margin: auto;
+            padding: 75px 25px 50px;
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .hero-text .badge {
+            margin-bottom: 18px;
+        }
+
+        .hero-text h1 {
+            font-size: 52px;
+            line-height: 1.1;
+            color: #111827;
+            margin-bottom: 22px;
+        }
+
+        .hero-text h1 span {
+            color: #4f46e5;
+        }
+
+        .hero-text p {
+            font-size: 17px;
+            color: #6b7280;
+            max-width: 620px;
+            margin-bottom: 28px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .hero-buttons .btn {
+            padding: 13px 22px;
+        }
+
+        .preview-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 22px;
+            padding: 25px;
+            box-shadow: 0 20px 50px rgba(15, 23, 42, 0.12);
+        }
+
+        .preview-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .preview-top h3 {
+            color: #111827;
+        }
+
+        .preview-score {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .preview-score-circle {
+            width: 125px;
+            height: 125px;
+            border-radius: 50%;
+            margin: auto;
+            background: #eef2ff;
+            border: 9px solid #c7d2fe;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .preview-score-circle strong {
+            font-size: 32px;
+            color: #4f46e5;
+        }
+
+        .preview-score-circle small {
+            color: #6b7280;
+        }
+
+        .preview-stat {
+            margin-top: 18px;
+        }
+
+        .preview-stat-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            font-size: 13px;
+        }
+
+        .preview-stat-header strong {
+            color: #111827;
+        }
+
+        .features {
+            max-width: 1100px;
+            margin: auto;
+            padding: 30px 25px 70px;
+        }
+
+        .features-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .features-title h2 {
+            font-size: 28px;
+            color: #111827;
+        }
+
+        .features-title p {
+            color: #6b7280;
+            margin-top: 5px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+        }
+
+        .feature-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 15px;
+            padding: 22px;
+            box-shadow: 0 5px 18px rgba(15, 23, 42, 0.04);
+        }
+
+        .feature-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            background: #eef2ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .feature-card h3 {
+            color: #111827;
+            font-size: 16px;
+            margin-bottom: 7px;
+        }
+
+        .feature-card p {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        @media (max-width: 900px) {
+
+            .hero-content {
+                grid-template-columns: 1fr;
+                padding-top: 45px;
+            }
+
+            .hero-text h1 {
+                font-size: 42px;
+            }
+
+            .feature-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .hero-content {
+                padding-top: 30px;
+            }
+
+            .hero-text h1 {
+                font-size: 34px;
+            }
+
+            .hero-text p {
+                font-size: 15px;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="hero">
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+
+        <div class="brand">
+
+            <div class="brand-icon">
+                SC
+            </div>
+
+            <div class="brand-text">
+                <h2>Smart Career Analytics</h2>
+                <span>Student Career & Placement Platform</span>
+            </div>
+
+        </div>
+
+        <div class="nav-buttons">
+
+            <a href="{{ url_for('login') }}"
+               class="btn btn-secondary">
+                Login
+            </a>
+
+            <a href="{{ url_for('register') }}"
+               class="btn btn-primary">
+                Get Started
+            </a>
+
+        </div>
+
+    </header>
+
+
+    <!-- HERO -->
+    <section class="hero-content">
+
+        <div class="hero-text">
+
+            <span class="badge badge-primary">
+                🎓 Student Career Platform
+            </span>
+
+            <h1>
+                Build Your Skills.
+                <span>Track Your Career.</span>
+            </h1>
+
+            <p>
+                A smart platform that helps students manage their
+                skills, coding practice, projects, certifications
+                and placement preparation in one place.
+            </p>
+
+            <div class="hero-buttons">
+
+                <a href="{{ url_for('register') }}"
+                   class="btn btn-primary">
+                    Create Your Profile →
+                </a>
+
+                <a href="{{ url_for('login') }}"
+                   class="btn btn-secondary">
+                    Already have an account?
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <!-- DASHBOARD PREVIEW -->
+        <div class="preview-card">
+
+            <div class="preview-top">
+
+                <div>
+                    <h3>Career Overview</h3>
+                    <span style="font-size:12px;color:#6b7280;">
+                        Your preparation at a glance
+                    </span>
+                </div>
+
+                <span class="badge badge-success">
+                    Tracking
+                </span>
+
+            </div>
+
+
+            <div class="preview-score">
+
+                <div class="preview-score-circle">
+
+                    <strong>78</strong>
+
+                    <small>/ 100</small>
+
+                </div>
+
+                <p style="margin-top:10px;color:#374151;font-weight:600;">
+                    Preparation Score
+                </p>
+
+            </div>
+
+
+            <div class="preview-stat">
+
+                <div class="preview-stat-header">
+
+                    <strong>Python</strong>
+                    <span>75%</span>
+
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress-fill"
+                         style="width:75%;">
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="preview-stat">
+
+                <div class="preview-stat-header">
+
+                    <strong>SQL</strong>
+                    <span>65%</span>
+
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress-fill"
+                         style="width:65%;">
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="preview-stat">
+
+                <div class="preview-stat-header">
+
+                    <strong>DSA</strong>
+                    <span>55%</span>
+
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress-fill"
+                         style="width:55%;">
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FEATURES -->
+    <section class="features">
+
+        <div class="features-title">
+
+            <h2>Everything You Need in One Place</h2>
+
+            <p>
+                Track your preparation and identify areas that need improvement.
+            </p>
+
+        </div>
+
+
+        <div class="feature-grid">
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    👤
+                </div>
+
+                <h3>Student Profile</h3>
+
+                <p>
+                    Maintain your education, skills,
+                    certifications, projects and internship details.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    📊
+                </div>
+
+                <h3>Career Analytics</h3>
+
+                <p>
+                    Visualize your preparation progress
+                    through simple charts and statistics.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    🎯
+                </div>
+
+                <h3>Skill Gap Analysis</h3>
+
+                <p>
+                    Identify skills that need improvement
+                    for your target placement preparation.
+                </p>
+
+            </div>
+
+
+            <div class="feature-card">
+
+                <div class="feature-icon">
+                    📄
+                </div>
+
+                <h3>Career Report</h3>
+
+                <p>
+                    Generate a structured report containing
+                    your preparation progress and skill analysis.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+</body>
+</html>
