@@ -240,9 +240,65 @@ Smart-Student-Career-Analytics
                 ▼              ▼              ▼
           ┌──────────┐   ┌──────────┐   ┌──────────┐
           │  Skills  │   │ Progress │   │ Profile  │
-          └────┬─────┘   └────┬─────┘   └──────────┘
-               │              │
-               └───────┬──────┘
-                       ▼
-              ┌─
+           └─────────┘    └─────────┘   └──────────┘
+
+
+## 🚀 Installation & Setup
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/chavansamiksha0806/Smart-Student-Career-Analytics.git
 ```
+
+### 2. Open the Project Folder
+
+```bash
+cd Smart-Student-Career-Analytics
+```
+
+### 3. Create a Virtual Environment
+
+```bash
+python -m venv venv
+```
+
+### 4. Activate the Virtual Environment
+
+**Windows:**
+
+```bash
+venv\Scripts\activate
+```
+
+### 5. Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 6. Initialize the Database
+
+```bash
+python init_db.py
+```
+
+This creates the SQLite database and required tables.
+
+### 7. Run the Flask Application
+
+```bash
+python app.py
+```
+
+### 8. Open in Your Browser
+
+```text
+http://127.0.0.1:5000/
+```
+
+The Smart Student Career & Placement Analytics application will now be available locally.
+
+**Note:** This is a local development setup. Do not use Flask debug mode in production.
+
+               
