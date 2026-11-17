@@ -221,29 +221,38 @@ Smart-Student-Career-Analytics
 
 ## 🔄 Application Workflow
 
-```text
-                    ┌─────────────────────┐
-                    │       Student       │
-                    └──────────┬──────────┘
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │ Register / Login    │
-                    └──────────┬──────────┘
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │   Student Profile   │
-                    └──────────┬──────────┘
-                               │
-                ┌──────────────┼──────────────┐
-                ▼              ▼              ▼
-          ┌──────────┐   ┌──────────┐   ┌──────────┐
-          │  Skills  │   │ Progress │   │ Profile  │
-           └─────────┘    └─────────┘   └──────────┘
+
+User
+  |
+  v
+Registration / Login
+  |
+  v
+Student Profile
+  |
+  v
+Dashboard
+  |
+  +-------------------+-------------------+
+  |                   |                   |
+  v                   v                   v
+Progress Tracking  Skills Analysis   Career Analytics
+  |                   |                   |
+  v                   v                   v
+Learning Plan      Skill Gap         Career Insights
+  |                   |                   |
+  +-------------------+-------------------+
+                      |
+                      v
+                 Career Report
+                      |
+                      v
+                  PDF Export
 
 
 ## 🚀 Installation & Setup
+
+Follow these steps to run the project locally.
 
 ### 1. Clone the Repository
 
@@ -251,7 +260,7 @@ Smart-Student-Career-Analytics
 git clone https://github.com/chavansamiksha0806/Smart-Student-Career-Analytics.git
 ```
 
-### 2. Open the Project Folder
+### 2. Navigate to the Project Folder
 
 ```bash
 cd Smart-Student-Career-Analytics
@@ -265,7 +274,7 @@ python -m venv venv
 
 ### 4. Activate the Virtual Environment
 
-**Windows:**
+For Windows:
 
 ```bash
 venv\Scripts\activate
@@ -283,9 +292,7 @@ pip install -r requirements.txt
 python init_db.py
 ```
 
-This creates the SQLite database and required tables.
-
-### 7. Run the Flask Application
+### 7. Run the Application
 
 ```bash
 python app.py
@@ -293,12 +300,11 @@ python app.py
 
 ### 8. Open in Your Browser
 
-```text
+Visit:
+
 http://127.0.0.1:5000/
-```
 
-The Smart Student Career & Placement Analytics application will now be available locally.
-
-**Note:** This is a local development setup. Do not use Flask debug mode in production.
+**Note:** This project is configured for local development. Do not use Flask debug mode in a production environment.
+local development setup. Do not use Flask debug mode in production.
 
                
