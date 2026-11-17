@@ -219,35 +219,62 @@ Smart-Student-Career-Analytics
 
 ---
 
+
 ## 🔄 Application Workflow
 
-
-User
-  |
-  v
-Registration / Login
-  |
-  v
-Student Profile
-  |
-  v
-Dashboard
-  |
-  +-------------------+-------------------+
-  |                   |                   |
-  v                   v                   v
-Progress Tracking  Skills Analysis   Career Analytics
-  |                   |                   |
-  v                   v                   v
-Learning Plan      Skill Gap         Career Insights
-  |                   |                   |
-  +-------------------+-------------------+
-                      |
-                      v
-                 Career Report
-                      |
-                      v
-                  PDF Export
+```text
+                 ┌──────────────────┐
+                 │       User       │
+                 └────────┬─────────┘
+                          │
+                          v
+                 ┌──────────────────┐
+                 │ Register / Login │
+                 └────────┬─────────┘
+                          │
+                          v
+                 ┌──────────────────┐
+                 │ Student Profile  │
+                 │  Setup / Update  │
+                 └────────┬─────────┘
+                          │
+                          v
+                 ┌──────────────────┐
+                 │    Dashboard     │
+                 └────────┬─────────┘
+                          │
+          ┌───────────────┼────────────────┐
+          │               │                │
+          v               v                v
+ ┌────────────────┐ ┌──────────────┐ ┌────────────────┐
+ │ Progress       │ │ Skills       │ │ Academic &     │
+ │ Tracking       │ │ Management   │ │ Career Analytics│
+ └───────┬────────┘ └──────┬───────┘ └───────┬────────┘
+         │                 │                 │
+         v                 v                 v
+ ┌────────────────┐ ┌──────────────┐ ┌────────────────┐
+ │ Coding &       │ │ Skill Gap    │ │ Performance    │
+ │ Interview Prep │ │ Analysis     │ │ Insights       │
+ └───────┬────────┘ └──────┬───────┘ └───────┬────────┘
+         │                 │                 │
+         │                 v                 │
+         │        ┌──────────────────┐        │
+         │        │ Personalized     │        │
+         │        │ Learning Plan    │        │
+         │        └────────┬─────────┘        │
+         │                 │                  │
+         └─────────────────┼──────────────────┘
+                           │
+                           v
+                  ┌──────────────────┐
+                  │  Career Report   │
+                  └────────┬─────────┘
+                           │
+                           v
+                  ┌──────────────────┐
+                  │   PDF Export     │
+                  └──────────────────┘
+```
 
 
 ## 🚀 Installation & Setup
@@ -305,6 +332,3 @@ Visit:
 http://127.0.0.1:5000/
 
 **Note:** This project is configured for local development. Do not use Flask debug mode in a production environment.
-local development setup. Do not use Flask debug mode in production.
-
-               
